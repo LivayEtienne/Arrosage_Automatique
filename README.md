@@ -139,8 +139,8 @@ Gestion de projet : Trello
 
 Code source : GitHub/GitLab
 
-Abdou Etienne Ba
-Fatoumata Hawa Ndiongue
-Fatou Bintou Sane
+Abdou Etienne Ba /
+Fatoumata Hawa Ndiongue /
+Fatou Bintou Sane /
 Fatou Dieye
 

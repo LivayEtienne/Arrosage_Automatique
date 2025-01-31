@@ -1,0 +1,183 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Remplir toute la hauteur de la page */
+}
+
+label {
+    display: block;
+    /* Permet au label de prendre toute la largeur */
+    text-align: left;
+    /* Aligne le texte à gauche */
+    margin-bottom: 5px;
+    /* Ajoute de l'espace sous le label */
+    font-weight: bold;
+    /* Met le texte en gras pour le rendre plus visible */
+    width: 70%;
+    /* Assure que le label a la même largeur que les champs */
+    margin-left: auto;
+    /* Centre horizontalement */
+    margin-right: auto;
+    /* Centre horizontalement */
+}
+
+.logout-icon {
+    position: absolute;
+    /* Positionnement absolu par rapport au parent */
+    bottom: 20px;
+    /* Distance du bas de la partie droite */
+    right: 20px;
+    /* Distance du côté droit de la partie droite */
+    width: 50px;
+    /* Ajustez la taille selon vos besoins */
+    height: auto;
+    /* Garder les proportions de l'image */
+    cursor: pointer;
+    /* Change le curseur au survol */
+}
+
+.form-container {
+    display: flex;
+    width: 80%;
+    /* Largeur totale du formulaire */
+    height: 80%;
+    /* Hauteur du formulaire, peut être ajustée */
+    border: 1px solid #ddd;
+    /* Optionnel : ajout d'une bordure pour délimiter */
+}
+
+.bloc {
+    padding: 25px;
+    background-color: white;
+    border-radius: 10px;
+    /* Bordure arrondie pour donner un aspect plus doux */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Ombre douce autour du formulaire */
+    width: 80%;
+    /* Largeur à 80% de l'élément parent */
+    max-width: 600px;
+    /* Limite la largeur maximale */
+    height: auto;
+    /* La hauteur s'ajuste automatiquement selon le contenu */
+    margin: 40px auto;
+    /* Augmente la marge supérieure */
+    /* Centrer le bloc horizontalement */
+}
+
+.left-side {
+    width: 40%;
+    /* 40% de la largeur pour la partie gauche */
+    background-color: #97DD52;
+    /* Fond vert */
+    color: white;
+    /* Texte blanc pour contraster */
+    display: flex;
+    flex-direction: column;
+    /* Disposition verticale des éléments */
+    justify-content: space-between;
+    /* Espacement entre les éléments */
+    padding: 20px;
+    height: 94, 5%;
+    /* Remplir toute la hauteur */
+}
+
+.left-side img {
+    width: 100%;
+    /* Images prennent toute la largeur */
+    height: auto;
+    /* Garder les proportions des images */
+    border-radius: 10px;
+    /* Bordure arrondie des images */
+}
+
+.top-image,
+.bottom-image {
+    flex: 1;
+    /* Prendre une part égale de l'espace vertical */
+    display: flex;
+    justify-content: center;
+    /* Centrer les images horizontalement */
+    align-items: center;
+    /* Centrer les images verticalement */
+    margin-bottom: 20px;
+}
+
+.right-side {
+    width: 60%;
+    /* Partie droite prend 60% de l'espace */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centrer verticalement */
+    align-items: center;
+    /* Centrer horizontalement */
+    height: 100%;
+    /* Assurer que la hauteur de la partie droite prend toute la hauteur */
+    text-align: center;
+    /* Aligner le texte au centre */
+}
+
+h2 {
+    margin-bottom: 30px;
+    /* Ajout d'un peu d'espace en dessous du titre */
+    font-size: 35px;
+    /* Augmente la taille de la police */
+}
+
+input,
+select,
+button {
+    display: block;
+    width: 70%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    /* Centre les boutons horizontalement */
+    align-items: center;
+    /* Centre les boutons verticalement */
+    gap: 10px;
+    /* Espacement entre les boutons */
+}
+
+button {
+    background-color: #97DD52;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    /* Taille des boutons */
+    width: 110px;
+    /* Largeur fixe pour le bouton Ajouter */
+}
+
+.cancel-button {
+    background-color: #f44336;
+    /* Couleur rouge pour le bouton Annuler */
+    color: white;
+    padding: 8px 12px;
+    /* Taille du bouton Annuler */
+    width: 110px;
+    /* Largeur fixe pour le bouton Annuler */
+}
+
+button:disabled {
+    background-color: #ccc;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}

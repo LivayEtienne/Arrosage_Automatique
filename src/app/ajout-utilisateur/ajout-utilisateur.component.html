@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="form-container">
+        <!-- Partie gauche avec fond vert et image -->
+        <div class="left-side">
+            <div class="image-container">
+                <img src="PhotoAjout.png" alt="Image principale" class="left-image" />
+            </div>
+        </div>
+
+        <!-- Partie droite avec formulaire -->
+        <div class="right-side">
+            <h2>Ajout d'un utilisateur</h2>
+            <div class="bloc">
+                <form [formGroup]="userForm" (ngSubmit)="addUser()">
+                    <label>Nom:</label>
+                    <input type="text" formControlName="nom" placeholder="Entrez votre nom" />
+
+                    <label>Prénom:</label>
+                    <input type="text" formControlName="prenom" placeholder="Entrez votre prénom" />
+
+                    <label>Téléphone:</label>
+                    <input type="text" formControlName="telephone" placeholder="Entrez votre numéro de téléphone" />
+
+                    <label>Adresse:</label>
+                    <input type="text" formControlName="adresse" placeholder="Entrez votre adresse" />
+
+                    <label>Rôle:</label>
+                    <select formControlName="role">
+                        <option value="utilisateur">Utilisateur</option>
+                        <option value="superAdmin">Super Admin</option>
+                    </select>
+
+                    <label>Card ID:</label>
+                    <input type="text" formControlName="cardID" placeholder="Scanner la Card ID" />
+
+                    <div class="button-group">
+                        <button type="button" class="cancel-button">Annuler</button>
+                        <button type="submit" [disabled]="userForm.invalid">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+            <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+            <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+        </div>
+    </div>
+</div>

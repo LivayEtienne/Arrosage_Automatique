@@ -1,0 +1,30 @@
+<nav class="navbar">
+    <div class="navbar-logo">
+        <img src="pepiniere.png" alt="Logo" />
+    </div>
+    <div class="navbar-search">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par numéro de téléphone..." />
+        <img src="search.png" alt="Recherche" class="search-icon" (click)="searchUser()" />
+    </div>
+</nav>
+
+<div class="container">
+    <aside class="sidebar">
+        <ul>
+            <li>
+                <a href="#"><img src="home.png" alt="Accueil" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="group.png" alt="Utilisateurs" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="categories.png" alt="Applications" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="file.png" alt="Historiques" class="sidebar-icon" /></a>
+            </li>
+        </ul>
+    </aside>
+
+
+</div>

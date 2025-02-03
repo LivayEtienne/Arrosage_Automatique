@@ -25,6 +25,20 @@ label {
     /* Centre horizontalement */
 }
 
+.logo-container {
+    text-align: center;
+    /* Centrer le logo */
+    margin-bottom: 10px;
+    /* Espacement en bas du logo */
+}
+
+.logo {
+    max-width: 60%;
+    /* S'assurer que le logo ne dépasse pas la largeur de son conteneur */
+    height: auto;
+    /* Garder les proportions */
+}
+
 .logout-icon {
     position: absolute;
     /* Positionnement absolu par rapport au parent */
@@ -126,24 +140,10 @@ label {
 }
 
 h2 {
-    margin-bottom: -30px;
+    margin-bottom: 30px;
     /* Ajout d'un peu d'espace en dessous du titre */
-    font-size: 30px;
+    font-size: 35px;
     /* Augmente la taille de la police */
-}
-
-.logo-container {
-    text-align: center;
-    /* Centrer le logo */
-    margin-bottom: 10px;
-    /* Espacement en bas du logo */
-}
-
-.logo {
-    max-width: 60%;
-    /* S'assurer que le logo ne dépasse pas la largeur de son conteneur */
-    height: auto;
-    /* Garder les proportions */
 }
 
 input,
@@ -169,7 +169,6 @@ button {
     /* Centre les boutons verticalement */
     gap: 10px;
     /* Espacement entre les boutons */
-    margin-top: 20px;
 }
 
 button {

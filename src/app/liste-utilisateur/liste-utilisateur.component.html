@@ -1,0 +1,107 @@
+<nav class="navbar">
+    <div class="navbar-logo">
+        <img src="pepiniere.png" alt="Logo" />
+    </div>
+    <div class="navbar-search">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par numéro de téléphone..." (input)="searchUser()" />
+        <img src="search.png" alt="Recherche" class="search-icon" (click)="searchUser()" />
+    </div>
+</nav>
+
+<div class="container">
+    <!-- <aside class="sidebar">
+        <ul>
+            <li>
+                <a href="#"><img src="home.png" alt="Accueil" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="group.png" alt="Utilisateurs" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="categories.png" alt="Applications" class="sidebar-icon" /></a>
+            </li>
+            <li>
+                <a href="#"><img src="file.png" alt="Historiques" class="sidebar-icon" /></a>
+            </li>
+        </ul>
+    </aside> -->
+
+    <main class="user-list">
+        <h2>Liste des Utilisateurs</h2>
+
+        <div class="button-container">
+            <div>
+                <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" /> Tout sélectionner
+            </div>
+            <button class="add-user-button" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <!-- Colonne pour les cases à cocher -->
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Status</th>
+                    <th>Rôle</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of paginatedItems">
+                    <td>
+                        <input type="checkbox" [(ngModel)]="user.selected" (change)="updateSelection()" />
+                    </td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.telephone }}</td>
+                    <td>{{ user.adresse }}</td>
+                    <td>{{ user.status ? 'Actif' : 'Inactif' }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <button (click)="navigateToUpdateUser(user._id)">
+                            <img src="modifier.png" alt="Modifier" class="action-icon" />
+                        </button>
+                        <button (click)="deleteUser(user)"> <!-- Passer l'objet utilisateur au lieu de l'ID -->
+                            <img src="supprimer.png" alt="Supprimer" class="action-icon" />
+                        </button>
+                        <button (click)="toggleRole(user)">
+                            <img src="switch.png" alt="Changer Rôle" class="action-icon" />
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
+            <span *ngFor="let page of [].constructor(getTotalPages()); let i = index">
+                <button (click)="goToPage(i + 1)" [class.active]="currentPage === i + 1">{{ i + 1 }}</button>
+            </span>
+            <button (click)="nextPage()" [disabled]="currentPage === getTotalPages()">Suivant</button>
+        </div>
+
+        <!-- Bouton Supprimer Tout -->
+        <button *ngIf="selectedCount > 0" (click)="deleteSelectedUsers()">Supprimer Tout</button>
+        <!-- Bouton de déconnexion -->
+        <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+
+        <!-- Modal de confirmation -->
+        <div class="modal" *ngIf="showModal">
+            <div class="modal-content">
+                <h3>Voulez-vous vraiment supprimer cet utilisateur ?</h3>
+                <p class="warning-message">Cette action sera irréversible.</p>
+                <!-- Message en rouge -->
+                <div class="modal-buttons">
+                    <button class="confirm-button" (click)="confirmDelete()">OUI</button>
+                    <!-- Bouton en vert -->
+                    <button class="cancel-button" (click)="cancelDelete()">NON</button>
+                    <!-- Bouton en rouge -->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

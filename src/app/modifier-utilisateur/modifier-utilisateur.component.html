@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="form-container">
+        <div class="left-side">
+            <div class="logo-container">
+                <img src="pepiniere.png" alt="Logo" class="logo" />
+                <!-- Remplacez "logo.png" par le chemin de votre logo -->
+            </div>
+            <div class="image-container">
+                <img src="PhotoAjout.png" alt="Image principale" class="left-image" />
+            </div>
+        </div>
+
+
+        <div class="right-side">
+            <h2>Modification d'un utilisateur</h2>
+            <div class="bloc">
+                <form [formGroup]="userForm" (ngSubmit)="updateItem()">
+                    <label>Nom:</label>
+                    <input type="text" formControlName="nom" placeholder="Entrez votre nom" />
+                    <div *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched" class="error">
+                        Nom requis.
+                    </div>
+
+                    <label>Prénom:</label>
+                    <input type="text" formControlName="prenom" placeholder="Entrez votre prénom" />
+                    <div *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched" class="error">
+                        Prénom requis.
+                    </div>
+
+                    <label>Téléphone:</label>
+                    <input type="text" formControlName="telephone" placeholder="Entrez votre numéro de téléphone" (input)="restrictInput($event)" maxlength="9" />
+                    <div *ngIf="userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched" class="error">
+                        Le téléphone doit contenir exactement 9 chiffres.
+                    </div>
+
+                    <label>Adresse:</label>
+                    <input type="text" formControlName="adresse" placeholder="Entrez votre adresse" />
+                    <div *ngIf="userForm.get('adresse')?.invalid && userForm.get('adresse')?.touched" class="error">
+                        Adresse requise.
+                    </div>
+
+                    <!-- Retiré Rôle et Card ID pour la modification -->
+
+                    <div class="button-group">
+                        <button type="button" class="cancel-button" (click)="navigateToUserList()">Retour</button>
+                        <button type="submit" [disabled]="userForm.invalid">Modifier</button>
+                    </div>
+                </form>
+            </div>
+            <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+            <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+        </div>
+    </div>
+</div>

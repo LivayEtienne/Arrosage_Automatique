@@ -1,0 +1,33 @@
+.sidebar {
+    border: 2px solid #64BD0B; /* Bordure verte */
+    border-radius: 2px; /* Coins légèrement arrondis */
+    padding: 15px; /* Espacement interne */
+    width: 100px; /* Largeur fixe */
+    margin-right: 20px;
+    background-color: #f9f9f9; /* Fond léger */
+    height: 92.5vh;
+  }
+  
+  .sidebar ul {
+    list-style: none; /* Supprime les puces */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    padding: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; /* Couleur du texte */
+    cursor: pointer;
+  }
+
+  .sidebar ul li i {
+    font-size: 24px; /* Taille des icônes */
+  }
+  
+  .sidebar li:hover {
+    background-color: #e3f2d3; /* Effet au survol */
+    border-radius: 5px;
+  }
+  

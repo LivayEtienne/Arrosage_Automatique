@@ -1,0 +1,152 @@
+/* Réinitialisation de base */
+body {
+  margin: 0 !important;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Structure principale */
+
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+
+
+/* Conteneur flex pour les cartes */
+.cards-container {
+  display: flex;
+  margin-left: 20px;
+  gap: 300px; /* Espacement entre les cartes */
+  justify-content: space-around; /* Répartition uniforme */
+  flex-wrap: wrap; /* Adaptabilité sur petits écrans */
+  margin-top: 20px;
+}
+
+/* Style des cartes */
+.humidity-card, .light-card, .temperature-card {
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 220px;
+  background: white;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.humidity-card:hover, .light-card:hover, .temperature-card:hover {
+  transform: scale(1.05);
+}
+
+/* Couleurs spécifiques */
+.humidity-card {
+  border: 2px solid #00cc00;
+}
+
+.light-card {
+  border: 2px solid #ffa500;
+}
+
+.temperature-card {
+  border: 2px solid #ff4500;
+}
+
+/* Titres des cartes */
+.humidity-card h2, .light-card h2, .temperature-card h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Bloc pourcentage/niveau/température */
+.percentage {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.percentage h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+/* Boutons d'alerte */
+.alert {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.alert:hover {
+  background-color: #cc0000;
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 768px) {
+  .cards-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .humidity-card, .light-card, .temperature-card {
+      width: 90%;
+  }
+}
+
+.loading {
+  color: grey;
+  font-style: italic;
+  animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+/* Conteneur des graphiques */
+.charts-container {
+  display: flex;
+  justify-content: space-around; /* Répartition uniforme des graphiques */
+  gap: 20px; /* Espacement entre les graphiques */
+  margin-top: 150px;
+  flex-wrap: wrap; /* Permet aux graphiques de passer à la ligne sur les petits écrans */
+  padding: 0 10px; /* Ajoute un peu de marge à gauche et à droite */
+}
+
+/* Graphique d'humidité (taille augmentée) */
+.chart:first-child {
+  width: 45%; /* Augmenter la largeur du graphique d'humidité */
+  min-width: 320px; /* Largeur minimale */
+}
+
+/* Graphique d'éclairage (taille réduite) */
+.chart:last-child {
+  width: 35%; /* Réduire la largeur du graphique d'éclairage */
+  min-width: 290px; /* Largeur minimale */
+  background-color: white; /* Fond blanc derrière le graphique */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre subtile pour le fond */
+}
+
+/* Pour les petits écrans */
+@media (max-width: 768px) {
+  .charts-container {
+    flex-direction: column; /* Les graphiques seront empilés verticalement */
+    align-items: center; /* Centrer les graphiques */
+  }
+
+  .chart {
+    width: 90%; /* Les graphiques prendront 90% de la largeur de l'écran */
+    min-width: 250px; /* Largeur minimale pour les petits écrans */
+  }
+}

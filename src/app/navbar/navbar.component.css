@@ -1,0 +1,22 @@
+.navbar {
+  height: 70px;
+  background-color: #97DD52;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%; /* Pour que le contenu occupe toute la largeur */
+}
+
+.nav-content img {
+  width: 200px;  /* Ajuste la taille du logo */
+  height: 200px;
+  object-fit: contain;
+  background-color: transparent;
+}
+

@@ -1,0 +1,48 @@
+.navbar {
+    height: 70px; /* Hauteur de la navbar */
+    background-color: #97DD52;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .sidebar {
+    margin-top: 5px;
+      position: fixed; /* Fixe la barre à droite */
+      top: 70px; /* Décale la sidebar juste en dessous de la navbar */
+      right: 0; /* La place bien à droite */
+      width: 250px; /* Largeur ajustable */
+      height: calc(100vh - 70px); /* Hauteur de la fenêtre moins la hauteur de la navbar */
+      background-color: #97DD52; /* Fond léger */
+      border-left: 2px solid #64BD0B; /* Bordure seulement à gauche */
+      padding: 15px; /* Espacement interne */
+      overflow-y: auto; /* Permet le défilement si nécessaire */
+  }
+  
+  .sidebar ul {
+      list-style: none; /* Supprime les puces */
+      padding: 0;
+      margin: 0;
+  }
+  
+  .sidebar li {
+      padding: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333; /* Couleur du texte */
+      cursor: pointer;
+  }
+  
+  .sidebar li:hover {
+      background-color: #e3f2d3; /* Effet au survol */
+      border-radius: 5px;
+  }
+
+  #titre{
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+  }
+  

@@ -1,7 +1,13 @@
 <aside class="sidebar">
   <ul>
-    <li><i class="fas fa-house-user" style="color: green;"></i></li> <!-- Icône Maison -->
-    <li><i class="fas fa-users"></i></li> <!-- Icône Utilisateurs -->
+    <li>
+      <a routerLink="/dashboard">
+        <i class="fas fa-house-user" style="color: green;"></i>
+      </a>
+    </li> <!-- Icône Maison -->
+    <li>
+      <a [routerLink]="['/liste-utilisateur']"><i class="fas fa-users"></i></a>
+    </li> <!-- Icône Utilisateurs -->
     <li><i class="fas fa-th-large"></i></li> <!-- Icône Dashboard -->
     <li><i class="fas fa-bookmark"></i></li> <!-- Icône Document -->
   </ul>

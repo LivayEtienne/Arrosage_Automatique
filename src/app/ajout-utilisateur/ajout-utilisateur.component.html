@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <div class="container">
     <div class="form-container">
         <div class="left-side">
@@ -31,6 +33,7 @@
                     <div *ngIf="userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched" class="error">
                         Le téléphone doit contenir exactement 9 chiffres.
                     </div>
+                    <div *ngIf="phoneExistsMessage" class="error">{{ phoneExistsMessage }}</div>
 
                     <label>Adresse:</label>
                     <input type="text" formControlName="adresse" placeholder="Entrez votre adresse" />
@@ -53,11 +56,13 @@
                         Card ID requise.
                     </div> -->
 
+
                     <label>Card ID:</label>
                     <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" (input)="onRFIDScan($event)" />
                     <div *ngIf="userForm.get('carteRfid')?.invalid && userForm.get('carteRfid')?.touched" class="error">
                         Card ID requise.
                     </div>
+                    <div *ngIf="rfidExistsMessage" class="error">{{ rfidExistsMessage }}</div>
 
                     <div class="button-group">
                         <button type="button" class="cancel-button" (click)="navigateToUserList()">Retour</button>
@@ -66,7 +71,16 @@
                 </form>
             </div>
             <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
-            <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
+            <!-- Modal for success message -->
+            <div class="modal" [ngClass]="{'show': successMessage}" (click)="closeModal()">
+                <div class="modal-content" (click)="$event.stopPropagation()">
+                    <span class="close" (click)="closeModal()">&times;</span>
+                    <!-- Votre HTML existant -->
+                    <p *ngIf="successMessage" class="success">
+                        <i class="fas fa-check-circle"></i> {{ successMessage }}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

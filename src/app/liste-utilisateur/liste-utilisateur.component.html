@@ -59,8 +59,16 @@
                     <td>{{ user.prenom }}</td>
                     <td>{{ user.telephone }}</td>
                     <td>{{ user.adresse }}</td>
-                    <td>{{ user.status ? 'Actif' : 'Inactif' }}</td>
-                    <td>{{ user.role }}</td>
+                    <td>
+                        <span [ngClass]="{'status-actif': user.status, 'status-inactif': !user.status}">
+                            {{ user.status ? 'Actif' : 'Inactif' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span [ngClass]="{'role-super-admin': user.role === 'Super Admin', 'role-utilisateur': user.role === 'Utilisateur'}">
+                            {{ user.role }}
+                        </span>
+                    </td>
                     <td>
                         <button (click)="navigateToUpdateUser(user._id)">
                             <img src="modifier.png" alt="Modifier" class="action-icon" />
@@ -85,7 +93,23 @@
         </div>
 
         <!-- Bouton Supprimer Tout -->
-        <button *ngIf="selectedCount > 0" (click)="deleteSelectedUsers()">Supprimer Tout</button>
+        <button *ngIf="selectedCount > 0" class="delete-all-button" (click)="openDeleteMultipleConfirmationModal()">
+            Supprimer Tout
+        </button>
+
+        <!-- Modal de confirmation pour suppression multiple -->
+        <div class="modal modal-delete-multiple" *ngIf="showModal">
+            <div class="modal-content">
+                <h3>Voulez-vous vraiment supprimer ces utilisateurs ?</h3>
+                <p class="warning-message">Cette action sera irréversible.</p>
+                <div class="modal-buttons">
+                    <button class="confirm-button" (click)="confirmDeleteMultiple()">OUI</button>
+                    <button class="cancel-button" (click)="cancelDeleteMultiple()">NON</button>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Bouton de déconnexion -->
         <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
 

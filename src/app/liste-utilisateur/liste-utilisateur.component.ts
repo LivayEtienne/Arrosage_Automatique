@@ -20,6 +20,8 @@ export class ListeUtilisateurComponent implements OnInit {
     currentPage: number = 1; // Page actuelle
     itemsPerPage: number = 9; // Nombre d'éléments par page
     searchQuery: string = ''; // Pour stocker la requête de recherche
+    isDarkMode: boolean = false; // État initial du mode sombre
+
 
 
 
@@ -137,8 +139,8 @@ export class ListeUtilisateurComponent implements OnInit {
         this.router.navigate(['/modifier-utilisateur', id]);
     }
 
-  // Méthode pour changer le rôle d'un utilisateur
-toggleRole(user: Item) {
+    // Méthode pour changer le rôle d'un utilisateur
+    toggleRole(user: Item) {
     // Inverser le rôle actuel
     const newRole = user.role === 'Utilisateur' ? 'Super Admin' : 'Utilisateur';
 
@@ -152,7 +154,7 @@ toggleRole(user: Item) {
 }
 
     // Méthode pour créer un nouvel utilisateur
-    createUser(newUser: Item) {
+    createUser(newUser: FormData) {
         this.userService.createItem(newUser).subscribe(addedUser => {
             this.items.push(addedUser); // Ajouter l'utilisateur à la liste
         });
@@ -203,4 +205,38 @@ toggleRole(user: Item) {
             this.getItems(); // Recharge tous les utilisateurs
         }
     }
+
+    // Ajoutez ces méthodes dans votre ListeUtilisateurComponent
+
+    // Méthode pour ouvrir le modal de confirmation de suppression multiple
+    openDeleteMultipleConfirmationModal() {
+        this.showModal = true; // Afficher le modal
+    }
+
+    // Méthode pour confirmer la suppression multiple
+    confirmDeleteMultiple() {
+        const idsToDelete = this.items.filter(user => user.selected).map(user => user._id);
+        console.log('IDs à supprimer:', idsToDelete); // Ajoutez ceci pour déboguer
+        if (idsToDelete.length > 0) {
+            this.userService.deleteMultipleItems(idsToDelete).subscribe(
+                () => {
+                    // Met à jour la liste des utilisateurs
+                    this.items = this.items.filter(user => !user.selected);
+                    this.selectAll = false; // Réinitialiser la sélection
+                    this.showModal = false; // Fermer le modal
+                },
+                (error) => {
+                    console.error('Erreur lors de la suppression des utilisateurs:', error);
+                }
+            );
+        } else {
+            console.log('Aucun utilisateur sélectionné pour la suppression.');
+        }
+    }
+    // Méthode pour annuler la suppression multiple
+    cancelDeleteMultiple() {
+        this.showModal = false; // Fermer le modal
+    }
+
+   
 }

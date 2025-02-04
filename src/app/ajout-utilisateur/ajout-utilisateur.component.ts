@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router'; // Importer Router
+// import { NavbarComponent } from '../navbar/navbar.component'; // Assurez-vous que le chemin est correct
+
 
 
 @Component({
@@ -10,11 +12,14 @@ import { Router } from '@angular/router'; // Importer Router
   standalone: true,
   templateUrl: './ajout-utilisateur.component.html',
   styleUrls: ['./ajout-utilisateur.component.css'],
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule ]
 })
 export class AjoutUtilisateurComponent {
   userForm: FormGroup;
   successMessage: string = '';
+  phoneExistsMessage: string = ''; // Pour message d'erreur téléphone
+  rfidExistsMessage: string = '';   // Pour message d'erreur carte RFID
+
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     // Création du formulaire avec les validations
@@ -27,25 +32,28 @@ export class AjoutUtilisateurComponent {
       ]],
       adresse: ['', Validators.required],
       role: ['Utilisateur', Validators.required],
-      carteRfid: ['', Validators.required]
+      carteRfid: ['', Validators.required]// Champ rendu optionnel, sans Validators.required
     });
   }
 
   // Fonction pour ajouter un utilisateur
   addUser() {
     if (this.userForm.valid) {
-      console.log('Données à envoyer:', this.userForm.value); // Vérifiez les données envoyées
-      this.userService.createItem(this.userForm.value).subscribe(
-        (res) => {
-          this.successMessage = 'Utilisateur ajouté avec succès !';
-          this.userForm.reset();
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+        this.userService.createItem(this.userForm.value).subscribe(
+            (res) => {
+                // Supposons que le backend renvoie le codeSecret dans la réponse
+                const codeSecret = res.codeSecret; // Ajustez selon la structure de votre réponse
+                this.successMessage = `Utilisateur ajouté avec succès ! 
+               
+                Code Secret : ${codeSecret}`;
+                this.userForm.reset();
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
     }
-  }
+}
 
   // Ajout dans le composant AjoutUtilisateurComponent
 
@@ -71,4 +79,9 @@ this.userForm.get('carteRfid')?.setValue(rfidID);
   navigateToUserList() {
     this.router.navigate(['/liste-utilisateur']); // Redirection vers la liste des utilisateurs
 }
+
+closeModal() {
+  this.successMessage = ''; // Réinitialiser le message de succès
+}
+
 }

@@ -22,8 +22,8 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Fonction pour ajouter un utilisateur
-  createItem(user: Item): Observable<any> {
+   // Fonction pour ajouter un utilisateur
+  createItem(user: FormData): Observable<any> {
     return this.http.post(this.apiUrl, user);
   }
 
@@ -60,5 +60,10 @@ toggleItemStatus(id: string): Observable<Item> {
 // Fonction pour rechercher un utilisateur par numéro de téléphone
 searchByPhoneNumber(phoneNumber: string): Observable<Item[]> {
   return this.http.get<Item[]>(`${this.apiUrl}/search?phoneNumber=${phoneNumber}`);
+}
+
+// Nouvelle méthode pour vérifier l'existence d'un utilisateur
+checkExistingUser(data: { telephone: string; carteRfid: string }): Observable<{ exists: boolean; type?: string }> {
+  return this.http.post<{ exists: boolean; type?: string }>('http://localhost:5000/api/check-user', data);
 }
 }

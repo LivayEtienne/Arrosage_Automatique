@@ -296,3 +296,89 @@ button {
     background-color: #97DD52;
     color: white;
 }
+
+
+/* styles.css ou le fichier CSS de votre composant */
+
+.delete-all-button {
+    background-color: green;
+    /* Couleur de fond verte */
+    color: white;
+    /* Couleur du texte blanche */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.delete-all-button:hover {
+    background-color: darkgreen;
+    /* Couleur plus foncée au survol */
+}
+
+
+/* Exemple de styles pour le modal de suppression multiple */
+
+.modal-delete-multiple {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fond semi-transparent */
+}
+
+.modal-delete-multiple .modal-content {
+    background-color: white;
+    /* Fond blanc pour le contenu du modal */
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+}
+
+.modal-delete-multiple .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.role-super-admin {
+    /* background-color: rgb(132, 200, 248); */
+    /* Couleur de fond pour Super Admin */
+    color: rgb(17, 97, 245);
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.role-utilisateur {
+    /* background-color: rgb(196, 238, 82); */
+    /* Couleur de fond pour Utilisateur */
+    color: rgb(4, 156, 4);
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.status-actif {
+    background-color: #97DD52;
+    /* Couleur de fond pour Actif */
+    color: white;
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.status-inactif {
+    background-color: rgb(252, 108, 83);
+    /* Couleur de fond pour Inactif */
+    color: white;
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}

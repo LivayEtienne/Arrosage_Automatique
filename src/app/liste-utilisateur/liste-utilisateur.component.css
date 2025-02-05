@@ -382,3 +382,60 @@ button {
     border-radius: 5px;
     /* Coins arrondis */
 }
+
+.import-user-button {
+    background-color: #97DD52;
+    /* Couleur verte */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 1000px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.import-user-button:hover {
+    background-color: #97DD52;
+    /* Couleur plus foncée au survol */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    /* Aligne verticalement les éléments */
+}
+
+.filter-container label {
+    margin-right: 10px;
+    /* Espace entre le label et le sélecteur */
+    font-weight: bold;
+    /* Met le texte en gras */
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    /* Ajouter du rembourrage pour un meilleur aspect */
+    border: 1px solid #ccc;
+    /* Bordure grise */
+    border-radius: 4px;
+    /* Coins arrondis */
+    font-size: 16px;
+    /* Taille de la police */
+    margin-right: 15px;
+    /* Espace entre les sélecteurs */
+}
+
+.filter-container select:focus {
+    border-color: #007bff;
+    /* Couleur de la bordure lors de la mise au point */
+    outline: none;
+    /* Supprimer l'outline par défaut */
+}

@@ -21,6 +21,9 @@ export class ListeUtilisateurComponent implements OnInit {
     itemsPerPage: number = 9; // Nombre d'éléments par page
     searchQuery: string = ''; // Pour stocker la requête de recherche
     isDarkMode: boolean = false; // État initial du mode sombre
+    selectedRole: string = ''; // Pour le filtre de rôle
+    selectedStatus: string = ''; // Pour le filtre de statut
+
 
 
 
@@ -46,11 +49,17 @@ export class ListeUtilisateurComponent implements OnInit {
         );
     }
 
-    // Mettre à jour les utilisateurs affichés en fonction de la page
+    // Mettre à jour les utilisateurs affichés en fonction de la page et des filtres
     updatePaginatedItems() {
+        const filteredItems = this.items.filter(user => {
+            const roleMatch = this.selectedRole ? user.role === this.selectedRole : true;
+            const statusMatch = this.selectedStatus ? user.status.toString() === this.selectedStatus : true;
+            return roleMatch && statusMatch;
+        });
+
         const start = (this.currentPage - 1) * this.itemsPerPage;
         const end = start + this.itemsPerPage;
-        this.paginatedItems = this.items.slice(start, end);
+        this.paginatedItems = filteredItems.slice(start, end);
     }
 
     // Méthode pour aller à la page suivante
@@ -91,6 +100,7 @@ export class ListeUtilisateurComponent implements OnInit {
         if (this.userToDelete) {
             this.userService.deleteItem(this.userToDelete).subscribe(() => {
                 this.items = this.items.filter(user => user._id !== this.userToDelete);
+                this.updatePaginatedItems(); // Mettre à jour la liste paginée
                 this.showModal = false; // Fermer le modal
                 this.userToDelete = null; // Réinitialiser l'utilisateur à supprimer
             });
@@ -118,16 +128,7 @@ export class ListeUtilisateurComponent implements OnInit {
         return this.items.filter(user => user.selected).length;
     }
 
-    // Méthode pour supprimer les utilisateurs sélectionnés
-    deleteSelectedUsers() {
-        const idsToDelete = this.items.filter(user => user.selected).map(user => user._id);
-        if (idsToDelete.length > 0) {
-            this.userService.deleteMultipleItems(idsToDelete).subscribe(() => {
-                this.items = this.items.filter(user => !user.selected);
-                this.selectAll = false; // Réinitialiser la sélection
-            });
-        }
-    }
+   
 
     // Méthode pour naviguer vers la page d'ajout d'utilisateur
     navigateToAddUser() {
@@ -206,8 +207,6 @@ export class ListeUtilisateurComponent implements OnInit {
         }
     }
 
-    // Ajoutez ces méthodes dans votre ListeUtilisateurComponent
-
     // Méthode pour ouvrir le modal de confirmation de suppression multiple
     openDeleteMultipleConfirmationModal() {
         this.showModal = true; // Afficher le modal
@@ -215,28 +214,88 @@ export class ListeUtilisateurComponent implements OnInit {
 
     // Méthode pour confirmer la suppression multiple
     confirmDeleteMultiple() {
+        // Appeler directement la méthode deleteSelectedUsers
+        this.deleteSelectedUsers(); // Supprime les utilisateurs sélectionnés
+        this.showModal = false; // Fermer le modal
+    }
+
+    // Méthode pour supprimer les utilisateurs sélectionnés
+    deleteSelectedUsers() {
         const idsToDelete = this.items.filter(user => user.selected).map(user => user._id);
-        console.log('IDs à supprimer:', idsToDelete); // Ajoutez ceci pour déboguer
         if (idsToDelete.length > 0) {
-            this.userService.deleteMultipleItems(idsToDelete).subscribe(
-                () => {
-                    // Met à jour la liste des utilisateurs
-                    this.items = this.items.filter(user => !user.selected);
-                    this.selectAll = false; // Réinitialiser la sélection
-                    this.showModal = false; // Fermer le modal
-                },
-                (error) => {
-                    console.error('Erreur lors de la suppression des utilisateurs:', error);
-                }
-            );
-        } else {
-            console.log('Aucun utilisateur sélectionné pour la suppression.');
+            this.userService.deleteMultipleItems(idsToDelete).subscribe(() => {
+                this.items = this.items.filter(user => !user.selected);
+                this.selectAll = false; // Réinitialiser la sélection
+                this.updatePaginatedItems(); // Mettre à jour la liste paginée
+            }, error => {
+                console.error('Erreur lors de la suppression des utilisateurs:', error);
+            });
         }
     }
+
     // Méthode pour annuler la suppression multiple
     cancelDeleteMultiple() {
         this.showModal = false; // Fermer le modal
     }
 
-   
+    toggleStatus(user: Item) {
+        // Inverser le statut actuel
+        const newStatus = !user.status;
+
+        // Créer un objet à envoyer à l'API
+        const updatedUserData = { ...user, status: newStatus };
+
+        // Appeler le service pour mettre à jour l'utilisateur
+        this.userService.updateItem(user._id, updatedUserData).subscribe(updatedUser => {
+            user.status = updatedUser.status; // Mettre à jour le statut localement
+        });
+    }
+
+    onFileSelected(event: any) {
+        const file: File = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                const csvContent = e.target.result;
+                const users = this.parseCSV(csvContent); // Convertir CSV en tableau d'utilisateurs
+                this.importUsers(users);
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    // Fonction pour parser le contenu CSV en objets utilisateur
+    parseCSV(csv: string): Item[] {
+        const lines = csv.split('\n');
+        const headers = lines[0].split(',').map(header => header.trim());
+
+        const users: Item[] = lines.slice(1).map(line => {
+            const data = line.split(',').map(value => value.trim());
+            const user: any = {};
+            headers.forEach((header, index) => {
+                user[header] = data[index];
+            });
+            return user as Item;
+        });
+        return users;
+    }
+
+    // Importer les utilisateurs via le service
+    importUsers(users: Item[]) {
+        this.userService.importUsers(users).subscribe(
+            (response) => {
+                console.log('Importation réussie', response);
+                this.getItems(); // Rafraîchir la liste des utilisateurs
+            },
+            (error) => {
+                console.error('Erreur lors de l\'importation des utilisateurs', error);
+            }
+        );
+    }
+
+    // Filtrer les utilisateurs
+    filterUsers() {
+        this.updatePaginatedItems(); // Recalculer les utilisateurs paginés après filtrage
+    }
+
 }

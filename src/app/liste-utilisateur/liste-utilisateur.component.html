@@ -27,12 +27,31 @@
     </aside>
 
     <main class="user-list">
-        <h2>Liste des Utilisateurs</h2>
+        <!-- <h2>Liste des Utilisateurs</h2> -->
+
+        <div class="filter-container">
+            <label for="roleFilter">Filtrer par Rôle:</label>
+            <select id="roleFilter" [(ngModel)]="selectedRole" (change)="filterUsers()">
+                <option value="">Tous</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Utilisateur">Utilisateur</option>
+            </select>
+
+            <label for="statusFilter">Filtrer par Statut:</label>
+            <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="filterUsers()">
+                <option value="">Tous</option>
+                <option value="true">Actif</option>
+                <option value="false">Inactif</option>
+            </select>
+        </div>
+
 
         <div class="button-container">
             <div>
                 <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" /> Tout sélectionner
             </div>
+            <input type="file" accept=".csv" #fileInput style="display: none;" (change)="onFileSelected($event)" />
+            <button class="import-user-button" (click)="fileInput.click()">Importer un fichier CSV</button>
             <button class="add-user-button" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
         </div>
 
@@ -40,7 +59,6 @@
             <thead>
                 <tr>
                     <th></th>
-                    <!-- Colonne pour les cases à cocher -->
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Téléphone</th>
@@ -73,11 +91,14 @@
                         <button (click)="navigateToUpdateUser(user._id)">
                             <img src="modifier.png" alt="Modifier" class="action-icon" />
                         </button>
-                        <button (click)="deleteUser(user)"> <!-- Passer l'objet utilisateur au lieu de l'ID -->
+                        <button (click)="deleteUser(user)">
                             <img src="supprimer.png" alt="Supprimer" class="action-icon" />
                         </button>
                         <button (click)="toggleRole(user)">
                             <img src="switch.png" alt="Changer Rôle" class="action-icon" />
+                        </button>
+                        <button (click)="toggleStatus(user)">
+                            <img src="switcher.png" alt="Changer Statut" class="action-icon" />
                         </button>
                     </td>
                 </tr>
@@ -109,23 +130,19 @@
             </div>
         </div>
 
-
-        <!-- Bouton de déconnexion -->
-        <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
-
-        <!-- Modal de confirmation -->
-        <div class="modal" *ngIf="showModal">
+        <!-- Modal de confirmation pour suppression unique -->
+        <div class="modal" *ngIf="userToDelete">
             <div class="modal-content">
                 <h3>Voulez-vous vraiment supprimer cet utilisateur ?</h3>
                 <p class="warning-message">Cette action sera irréversible.</p>
-                <!-- Message en rouge -->
                 <div class="modal-buttons">
                     <button class="confirm-button" (click)="confirmDelete()">OUI</button>
-                    <!-- Bouton en vert -->
                     <button class="cancel-button" (click)="cancelDelete()">NON</button>
-                    <!-- Bouton en rouge -->
                 </div>
             </div>
         </div>
+
+        <!-- Bouton de déconnexion -->
+        <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
     </main>
 </div>

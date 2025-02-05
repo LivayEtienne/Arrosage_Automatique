@@ -3,13 +3,11 @@
         <div class="left-side">
             <div class="logo-container">
                 <img src="pepiniere.png" alt="Logo" class="logo" />
-                <!-- Remplacez "logo.png" par le chemin de votre logo -->
             </div>
             <div class="image-container">
                 <img src="PhotoAjout.png" alt="Image principale" class="left-image" />
             </div>
         </div>
-
 
         <div class="right-side">
             <h2>Modification d'un utilisateur</h2>
@@ -39,7 +37,11 @@
                         Adresse requise.
                     </div>
 
-                    <!-- Retiré Rôle et Card ID pour la modification -->
+                    <label>Card ID:</label>
+                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" (input)="onRFIDScan($event)" />
+                    <div *ngIf="userForm.get('carteRfid')?.invalid && userForm.get('carteRfid')?.touched" class="error">
+                        Card ID requise.
+                    </div>
 
                     <div class="button-group">
                         <button type="button" class="cancel-button" (click)="navigateToUserList()">Retour</button>

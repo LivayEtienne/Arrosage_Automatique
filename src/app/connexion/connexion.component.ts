@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConnexionService } from '../services/connexion.service';
+import { Router } from '@angular/router'; // Importer Router
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -8,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-connexion',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule , HttpClientModule],
+  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
   templateUrl: './connexion.component.html',
   styleUrls: ['./connexion.component.css']
 })
@@ -16,16 +17,20 @@ export class ConnexionComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private connexionService: ConnexionService) {
+  constructor(
+    private fb: FormBuilder,
+    private connexionService: ConnexionService,
+    private router: Router // Injecter le router
+  ) {
     this.loginForm = this.fb.group({
-      code1: ['', [Validators.required,Number, Validators.maxLength(1)]],
-      code2: ['', [Validators.required,Number, Validators.maxLength(1)]],
-      code3: ['', [Validators.required,Number, Validators.maxLength(1)]],
-      code4: ['', [Validators.required, Number, Validators.maxLength(1)]]
+      code1: ['', [Validators.required, Validators.maxLength(1)]],
+      code2: ['', [Validators.required, Validators.maxLength(1)]],
+      code3: ['', [Validators.required, Validators.maxLength(1)]],
+      code4: ['', [Validators.required, Validators.maxLength(1)]]
     });
   }
 
-  // Gère le focus automatique
+  // Gère le focus automatique vers le champ suivant
   moveFocus(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
     if (currentInput.value.length === 1) {
       nextInput.focus();
@@ -56,7 +61,12 @@ export class ConnexionComponent {
       this.connexionService.login({ codeSecret: codeSecretNumber }).subscribe({
         next: (response) => {
           console.log('Réponse serveur :', response);
-          this.errorMessage = ''; // Réinitialiser l'erreur en cas de succès
+
+          if (response.role === 'Super Admin') {
+            this.router.navigate(['/dashboard']); // Rediriger vers le dashboard si admin
+          } else {
+            this.router.navigate(['/']); // Rediriger vers la page d'accueil
+          }
         },
         error: (error) => {
           console.error('Erreur :', error);

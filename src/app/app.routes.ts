@@ -2,12 +2,14 @@ import { Routes } from '@angular/router';
 import { AjoutUtilisateurComponent } from './ajout-utilisateur/ajout-utilisateur.component';
 import { DasboardComponent } from './dasboard/dasboard.component';
 import { ModifierUtilisateurComponent } from './modifier-utilisateur/modifier-utilisateur.component';
-import { ListeUtilisateurComponent } from './liste-utilisateur/liste-utilisateur.component'; // Assurez-vous que le chemin est correct
+import { ListeUtilisateurComponent } from './liste-utilisateur/liste-utilisateur.component';
+import { ConnexionComponent } from './connexion/connexion.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Redirection par défaut
+  { path: '', redirectTo: 'connexion', pathMatch: 'full' }, // Redirection vers la connexion
+  { path: 'connexion', component: ConnexionComponent }, // Ajout de la route connexion
   { path: 'ajout-utilisateur', component: AjoutUtilisateurComponent },
-  { path: 'modifier-utilisateur/:id', component: ModifierUtilisateurComponent }, // Route pour modifier un utilisateur par ID
-  { path: 'dashboard', component: DasboardComponent }, // Route pour afficher le tableau de bord
-  { path: 'liste-utilisateur', component: ListeUtilisateurComponent }, // Route pour afficher la liste des utilisateurs
+  { path: 'modifier-utilisateur/:id', component: ModifierUtilisateurComponent },
+  { path: 'dashboard', component: DasboardComponent },
+  { path: 'liste-utilisateur', component: ListeUtilisateurComponent },
 ];

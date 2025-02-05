@@ -296,3 +296,146 @@ button {
     background-color: #97DD52;
     color: white;
 }
+
+
+/* styles.css ou le fichier CSS de votre composant */
+
+.delete-all-button {
+    background-color: green;
+    /* Couleur de fond verte */
+    color: white;
+    /* Couleur du texte blanche */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.delete-all-button:hover {
+    background-color: darkgreen;
+    /* Couleur plus foncée au survol */
+}
+
+
+/* Exemple de styles pour le modal de suppression multiple */
+
+.modal-delete-multiple {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fond semi-transparent */
+}
+
+.modal-delete-multiple .modal-content {
+    background-color: white;
+    /* Fond blanc pour le contenu du modal */
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+}
+
+.modal-delete-multiple .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.role-super-admin {
+    /* background-color: rgb(132, 200, 248); */
+    /* Couleur de fond pour Super Admin */
+    color: rgb(17, 97, 245);
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.role-utilisateur {
+    /* background-color: rgb(196, 238, 82); */
+    /* Couleur de fond pour Utilisateur */
+    color: rgb(4, 156, 4);
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.status-actif {
+    background-color: #97DD52;
+    /* Couleur de fond pour Actif */
+    color: white;
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.status-inactif {
+    background-color: rgb(252, 108, 83);
+    /* Couleur de fond pour Inactif */
+    color: white;
+    /* Couleur du texte */
+    padding: 5px 10px;
+    /* Ajout de padding pour le style */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.import-user-button {
+    background-color: #97DD52;
+    /* Couleur verte */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 1000px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.import-user-button:hover {
+    background-color: #97DD52;
+    /* Couleur plus foncée au survol */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    /* Aligne verticalement les éléments */
+}
+
+.filter-container label {
+    margin-right: 10px;
+    /* Espace entre le label et le sélecteur */
+    font-weight: bold;
+    /* Met le texte en gras */
+}
+
+.filter-container select {
+    padding: 8px 12px;
+    /* Ajouter du rembourrage pour un meilleur aspect */
+    border: 1px solid #ccc;
+    /* Bordure grise */
+    border-radius: 4px;
+    /* Coins arrondis */
+    font-size: 16px;
+    /* Taille de la police */
+    margin-right: 15px;
+    /* Espace entre les sélecteurs */
+}
+
+.filter-container select:focus {
+    border-color: #007bff;
+    /* Couleur de la bordure lors de la mise au point */
+    outline: none;
+    /* Supprimer l'outline par défaut */
+}

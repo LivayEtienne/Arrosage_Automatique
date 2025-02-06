@@ -58,20 +58,23 @@ export class ModifierUtilisateurComponent implements OnInit {
     );
   }
 
-  // Modifier un utilisateur
-  updateItem() {
-    if (this.userForm.valid) {
+// Modifier un utilisateur
+updateItem() {
+  if (this.userForm.valid) {
       this.userService.updateItem(this.userId, this.userForm.value).subscribe(
-        (res) => {
-          this.successMessage = 'Utilisateur modifié avec succès !';
-          this.userForm.reset();  // Réinitialiser le formulaire après succès
-        },
-        (err) => {
-          console.error(err);
-        }
+          (res) => {
+              this.successMessage = 'Utilisateur modifié avec succès !';
+              this.userForm.reset();  // Réinitialiser le formulaire après succès
+
+              // Redirection vers la liste des utilisateurs après succès
+              this.router.navigate(['/liste-utilisateur']);
+          },
+          (err) => {
+              console.error(err);
+          }
       );
-    }
   }
+}
 
   // Restreindre la saisie aux chiffres uniquement
   restrictInput(event: any) {

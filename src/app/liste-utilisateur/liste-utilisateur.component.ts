@@ -20,9 +20,10 @@ export class ListeUtilisateurComponent implements OnInit {
     currentPage: number = 1; // Page actuelle
     itemsPerPage: number = 9; // Nombre d'éléments par page
     searchQuery: string = ''; // Pour stocker la requête de recherche
-    isDarkMode: boolean = false; // État initial du mode sombre
+    isDarkMode: boolean = false; // État initial du mod<th>Code Secret</th>e sombre
     selectedRole: string = ''; // Pour le filtre de rôle
     selectedStatus: string = ''; // Pour le filtre de statut
+    noUsersFound: boolean = false; // Ajoutez cette ligne
 
 
 
@@ -56,7 +57,9 @@ export class ListeUtilisateurComponent implements OnInit {
             const statusMatch = this.selectedStatus ? user.status.toString() === this.selectedStatus : true;
             return roleMatch && statusMatch;
         });
-
+    
+        this.noUsersFound = filteredItems.length === 0; // Mettez à jour la variable
+    
         const start = (this.currentPage - 1) * this.itemsPerPage;
         const end = start + this.itemsPerPage;
         this.paginatedItems = filteredItems.slice(start, end);
@@ -115,12 +118,16 @@ export class ListeUtilisateurComponent implements OnInit {
 
     // Méthode pour basculer la sélection de tous les utilisateurs
     toggleSelectAll() {
-        this.items.forEach(user => user.selected = this.selectAll);
+        const currentPageUsers = this.paginatedItems; // Utilisateurs de la page actuelle
+        const allSelected = currentPageUsers.every(user => user.selected); // Vérifie si tous sont sélectionnés
+        currentPageUsers.forEach(user => user.selected = !allSelected); // Inverse la sélection
+        this.selectAll = !allSelected; // Met à jour l'état de "Tout sélectionner"
     }
 
     // Méthode pour mettre à jour le statut de 'selectAll'
     updateSelection() {
-        this.selectAll = this.items.every(user => user.selected);
+        const currentPageUsers = this.paginatedItems; // Utilisateurs de la page actuelle
+        this.selectAll = currentPageUsers.every(user => user.selected); // Met à jour l'état de "Tout sélectionner"
     }
 
     // Compter le nombre d'utilisateurs sélectionnés
@@ -251,51 +258,36 @@ export class ListeUtilisateurComponent implements OnInit {
         });
     }
 
-    onFileSelected(event: any) {
-        const file: File = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e: any) => {
-                const csvContent = e.target.result;
-                const users = this.parseCSV(csvContent); // Convertir CSV en tableau d'utilisateurs
-                this.importUsers(users);
-            };
-            reader.readAsText(file);
-        }
-    }
-
-    // Fonction pour parser le contenu CSV en objets utilisateur
-    parseCSV(csv: string): Item[] {
-        const lines = csv.split('\n');
-        const headers = lines[0].split(',').map(header => header.trim());
-
-        const users: Item[] = lines.slice(1).map(line => {
-            const data = line.split(',').map(value => value.trim());
-            const user: any = {};
-            headers.forEach((header, index) => {
-                user[header] = data[index];
-            });
-            return user as Item;
-        });
-        return users;
-    }
-
-    // Importer les utilisateurs via le service
-    importUsers(users: Item[]) {
-        this.userService.importUsers(users).subscribe(
-            (response) => {
-                console.log('Importation réussie', response);
-                this.getItems(); // Rafraîchir la liste des utilisateurs
-            },
-            (error) => {
-                console.error('Erreur lors de l\'importation des utilisateurs', error);
-            }
-        );
-    }
-
+    
     // Filtrer les utilisateurs
     filterUsers() {
         this.updatePaginatedItems(); // Recalculer les utilisateurs paginés après filtrage
     }
+
+    // Ajoutez une propriété pour stocker le fichier sélectionné
+    selectedFile: File | null = null;
+
+    // Méthode pour ouvrir la boîte de dialogue de fichier CSV
+    onFileSelected(event: any): void {
+        this.selectedFile = event.target.files[0]; // Récupérer le fichier sélectionné
+    }
+
+    // Méthode pour importer le fichier CSV
+    importCsv() {
+        if (this.selectedFile) {
+            this.userService.importCsv(this.selectedFile).subscribe(
+                (response) => {
+                    console.log('CSV importé avec succès', response);
+                    this.getItems(); // Rafraîchir la liste des utilisateurs après importation
+                },
+                (error) => {
+                    console.error('Erreur lors de l\'importation du CSV', error);
+                }
+            );
+        } else {
+            alert('Veuillez sélectionner un fichier CSV avant d\'importer.');
+        }
+    }
+
 
 }

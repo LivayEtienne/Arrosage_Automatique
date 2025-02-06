@@ -4,6 +4,8 @@ import { ConnexionService } from '../services/connexion.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-connexion',
@@ -12,9 +14,14 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './connexion.component.html',
   styleUrls: ['./connexion.component.css']
 })
+
+
 export class ConnexionComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
+  cardId: string = '';  // Stocker l'ID RFID scanné ici
+  cardScanSubscription: Subscription | null = null;
+
 
   constructor(private fb: FormBuilder, private connexionService: ConnexionService) {
     this.loginForm = this.fb.group({
@@ -24,6 +31,43 @@ export class ConnexionComponent {
       code4: ['', [Validators.required, Number, Validators.maxLength(1)]]
     });
   }
+
+
+
+
+
+  ngOnInit() {
+    // Simulation du scan de carte RFID
+    // Imaginons que ce service retourne un Observable de l'ID scanné
+    this.cardScanSubscription = this.connexionService.getCardScans().subscribe({
+      next: (scanData) => {
+        console.log('Carte RFID scannée :', scanData.cardId);
+        this.cardId = scanData.cardId;  // On récupère l'ID de la carte scannée
+        //this.loginForm.patchValue({ carteRfid: this.cardId });  // On remplit le formulaire avec l'ID de la carte
+        //this.onSubmit();  // On soumet le formulaire automatiquement
+        const cardInput = document.getElementById('cardIdInput') as HTMLInputElement;
+        if (cardInput) {
+        cardInput.value = this.cardId;
+        this.onSubmit1()
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors du scan RFID:', error);
+      }
+    });
+  }
+ 
+
+  ngOnDestroy() {
+    // On se désabonne lorsque le composant est détruit
+    if (this.cardScanSubscription) {
+      this.cardScanSubscription.unsubscribe();
+    }
+  }
+
+
+
+
 
   // Gère le focus automatique
   moveFocus(currentInput: HTMLInputElement, nextInput: HTMLInputElement) {
@@ -46,7 +90,39 @@ export class ConnexionComponent {
     }
   }
 
+
+
+  onSubmit1() {
+    const cardInput = document.getElementById('cardIdInput') as HTMLInputElement;
+    if (!cardInput || !cardInput.value.trim()) {
+      this.errorMessage = 'Veuillez scanner votre carte RFID.';
+      return;
+    }
+  
+    const cardIdValue = cardInput.value.trim();
+    this.errorMessage = ''; // Réinitialisation des erreurs
+  
+    this.connexionService.login({ carteRfid: cardIdValue }).subscribe({
+      next: (response) => {
+        console.log('✅ Connexion réussie :', response);
+        this.errorMessage = ''; // Réinitialiser les erreurs après succès
+      },
+      error: (error) => {
+        console.error('❌ Erreur de connexion :', error);
+        this.errorMessage = error.error?.msg || 'Erreur de connexion';
+        const firstInput = document.querySelector('input[formControlName="code1"]') as HTMLInputElement;
+        if (firstInput) {
+          setTimeout(() => firstInput.focus(), 0);
+        }
+        
+      }
+    });
+  }
+  
+
+
   onSubmit() {
+    
     if (this.loginForm.valid) {
       let codeSecret: string = Object.values(this.loginForm.value).join('');
       let codeSecretNumber: number = Number(codeSecret);
@@ -62,6 +138,12 @@ export class ConnexionComponent {
           console.error('Erreur :', error);
           this.errorMessage = error.error.msg || 'Erreur de connexion';
           this.loginForm.reset(); // Réinitialiser le formulaire
+
+          const firstInput = document.querySelector('input[formControlName="code1"]') as HTMLInputElement;
+          if (firstInput) {
+            setTimeout(() => firstInput.focus(), 0);
+          }
+          
         }
       });
     } else {

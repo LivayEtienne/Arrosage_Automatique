@@ -1,0 +1,20 @@
+.content {
+    display: flex;
+    position: relative;
+  }
+  
+  .main-content {
+    margin-left: 220px; /* Marge pour compenser la largeur du sidebar + padding */
+    padding: 20px;
+    width: calc(100% - 220px); /* Largeur ajustée pour le contenu principal */
+  }
+  
+  .separator {
+    width: 2px;
+    background-color: #64BD0B; /* Couleur verte pour la ligne de séparation */
+    height: 100vh; /* Hauteur totale de la vue */
+    position: fixed; /* Fixe la position du séparateur */
+    top: 0;
+    left: 200px; /* Position à droite du sidebar */
+  }
+  

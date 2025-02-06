@@ -1,0 +1,259 @@
+<app-navbar></app-navbar>
+<div class="content">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <div class="separator"></div>
+    <button class="add-plant-button" (click)="openModal()">Ajouter une plante</button>
+
+    <!-- Nouveau message de succès -->
+    <div *ngIf="successMessage" class="modal-success-message">
+      <div class="modal-success-content">
+        <span class="close-button" (click)="successMessage = null">&times;</span>
+        <p>{{ successMessage }}</p>
+      </div>
+    </div>
+
+    <!-- Nouveau message d'erreur -->
+    <div *ngIf="errorMessage" class="modal-error-message">
+      <div class="modal-error-content">
+        <span class="close-button" (click)="errorMessage = null">&times;</span>
+        <p>{{ errorMessage }}</p>
+      </div>
+    </div>
+
+    <div class="plants-container">
+      <!-- Exemple de plante -->
+      <div class="plant-card" *ngFor="let plant of plants">
+        <img *ngIf="plant.photo" [src]="'http://localhost:5000/' + plant.photo" alt="Plant Image" class="plant-image">
+        <div class="plant-details">
+          <h3 class="plant-name">{{ plant.nom }}</h3>
+          <div class="plant-actions">
+            <i class="fas fa-eye view-icon" (click)="openDetailsModal(plant)"></i>
+            <i class="fas fa-edit edit-icon" *ngIf="plant._id" (click)="logBeforeOpenEditModal(plant._id, plant.programs)"></i>
+
+            
+            <i class="fas fa-trash delete-icon" *ngIf="plant._id" (click)="openConfirmationModal(plant)"></i>
+          </div>
+          <button class="program-button"
+            [disabled]="plant._id ? isProgramSubmittedForPlants[plant._id] : false"
+            (click)="plant._id ? openProgramModal(plant._id) : null">
+            {{ plant._id ? (isProgramSubmittedForPlants[plant._id] ? 'Programmé' : 'Programmer') : 'Programmer' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nouveau Modal de confirmation de suppression -->
+    <div *ngIf="showConfirmationModal" class="showmodal">
+      <div class="showmodal-content">
+        <h4>{{ confirmationMessage }}</h4>
+        <div class="modal-actions">
+          <button class="btn btn-danger" (click)="confirmDelete()">Confirmer</button>
+          <button class="btn btn-secondary" (click)="closeConfirmationModal()">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div *ngIf="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" (click)="closeModal()">&times;</span>
+        <h2>Ajouter une plante</h2>
+        <form [formGroup]="plantForm" (ngSubmit)="submit()" enctype="multipart/form-data">
+          <div class="form-row">
+            <div class="form-group mb-3">
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" formControlName="nom">
+              <div *ngIf="plantForm.get('nom')!.invalid && plantForm.get('nom')!.touched">
+                <small class="text-danger">Le nom est requis</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="category">Catégorie</label>
+              <select id="category" formControlName="category">
+                <option value="" disabled selected>Sélectionner une catégorie</option>
+                <option value="agricole">Agricole</option>
+                <option value="horticole">Horticole</option>
+                <option value="amenagement paysager">Aménagement paysager</option>
+              </select>
+              <div *ngIf="plantForm.get('category')!.invalid && plantForm.get('category')!.touched">
+                <small class="text-danger">La catégorie est requise</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group mb-3">
+              <label for="photo">Photo</label>
+              <input type="file" id="photo" formControlName="photo" (change)="onFileChange($event)">
+              <div *ngIf="!selectedFile && plantForm.get('photo')!.touched" class="text-danger">
+                <small>La photo est requise</small>
+              </div>
+              <div *ngIf="selectedFile">
+                <small class="text-success">{{ selectedFile.name }}</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="seuilHumidity">Seuil d'humidité (%)</label>
+              <input type="number" id="seuilHumidity" formControlName="seuilHumidity">
+              <div *ngIf="plantForm.get('seuilHumidity')!.invalid && plantForm.get('seuilHumidity')!.touched">
+                <small class="text-danger">Le seuil d'humidité doit être un nombre entre 0 et 100</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group mb-3">
+              <label for="seuilLuminosity">Seuil de luminosité (%)</label>
+              <input type="number" id="seuilLuminosity" formControlName="seuilLuminosity">
+              <div *ngIf="plantForm.get('seuilLuminosity')!.invalid && plantForm.get('seuilLuminosity')!.touched">
+                <small class="text-danger">Le seuil de luminosité doit être un nombre entre 0 et 100</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="volumeEau">Volume d'eau</label>
+              <input type="number" id="volumeEau" formControlName="volumeEau" class="form-control">
+              <div *ngIf="plantForm.get('volumeEau')!.invalid && plantForm.get('volumeEau')!.touched">
+                <small class="text-danger">Le volume d'eau est requis</small>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="eauUnit">Unité d'eau</label>
+              <select id="eauUnit" formControlName="eauUnit" class="form-control">
+                <option value="" disabled selected>Sélectionner une unite</option>
+                <option value="l">Litres</option>
+                <option value="cl">Centilitres</option>
+                <option value="dl">Décilitres</option>
+                <option value="ml">Millilitres</option>
+              </select>
+              <div *ngIf="plantForm.get('eauUnit')!.invalid && plantForm.get('eauUnit')!.touched">
+                <small class="text-danger">L'unité d'eau est requise</small>
+              </div>
+            </div>
+          </div>
+          <button type="submit" [disabled]="plantForm.invalid">Ajouter</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal pour afficher les détails de la plante -->
+    <div *ngIf="selectedPlant" class="modal">
+      <div class="modal-content">
+        <span class="close-button" (click)="selectedPlant = null">&times;</span>
+        <h2>Détails de la plante</h2>
+        <p><strong>Nom :</strong> {{ selectedPlant.nom }}</p>
+        <p><strong>Catégorie :</strong> {{ selectedPlant.category }}</p>
+        <p><strong>Seuil d'humidité :</strong> {{ selectedPlant.seuilHumidity }}%</p>
+        <p><strong>Seuil de luminosité :</strong> {{ selectedPlant.seuilLuminosity }}%</p>
+        <p><strong>Volume d'eau :</strong> {{ selectedPlant.volumeEau }} {{ selectedPlant.eauUnit }}</p>
+        <img *ngIf="selectedPlant.photo" [src]="'http://localhost:5000/' + selectedPlant.photo" alt="Plant Image" class="plant-image">
+
+        <!-- Détails de l'arrosage -->
+        <div *ngIf="selectedPlant.arrosages && selectedPlant.arrosages.length > 0">
+          <h3>Programmation de l'arrosage</h3>
+          <p><strong>Nombre d'arrosages :</strong> {{ selectedPlant.arrosages.length }}</p>
+          <div *ngFor="let arrosage of selectedPlant.arrosages; let i = index">
+            <p><strong>Arrosage {{ i + 1 }} :</strong></p>
+            <p><strong>Heure :</strong> {{ arrosage.heure }}</p>
+            <p><strong>Volume d'eau :</strong> {{ arrosage.volumeEau }} {{ arrosage.uniteVolume }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de programmation -->
+    <div *ngIf="showModale" class="modal">
+      <div class="modal-content">
+        <!-- Bouton de fermeture (croix) en haut à droite -->
+        <span class="close-button" (click)="closeProgramModal()">&#10005;</span>
+
+        <h2>Programmer un Arrosage</h2>
+
+        <!-- Sélectionner plusieurs dates -->
+        <label for="dates">Sélectionner les dates :</label>
+        <input type="date" [(ngModel)]="programDates" multiple />
+
+        <!-- Choisir la durée -->
+        <label for="duration">Durée :</label>
+        <select [(ngModel)]="programDuration">
+          <option value="" disabled selected>Sélectionner une durée</option>
+          <option value="Pendant un mois">Pendant un mois</option>
+          <option value="Tous les 2 jours">Tous les 2 jours</option>
+          <option value="Tous les jours">Tous les jours</option>
+        </select>
+
+        <!-- Nombre de fois -->
+        <label for="times">Nombre de fois :</label>
+        <input type="number" [(ngModel)]="programTimes" (change)="updateFieldsForTimes()" />
+
+        <!-- Affichage des champs dynamiques en fonction du nombre de fois -->
+        <div *ngFor="let time of times">
+          <label for="time-{{time}}">Heure {{time}} :</label>
+          <input type="time" [(ngModel)]="programTimesFields[time - 1].time" />
+
+          <label for="volume-{{time}}">Volume d'eau (en litres) :</label>
+          <input type="number" [(ngModel)]="programTimesFields[time - 1].volume" />
+
+          <label for="unit-{{time}}">Unité :</label>
+          <select [(ngModel)]="programTimesFields[time - 1].unit">
+            <option value="litres">Litres</option>
+            <option value="decilitres">Décilitres</option>
+            <option value="decilitres">Centilitres</option>
+            <option value="decilitres">Millilitres</option>
+          </select>
+        </div>
+
+        <button class="program-button" (click)="currentPlantId ? submitProgram(currentPlantId) : null">
+          Soumettre
+        </button>
+      </div>
+    </div>
+
+ 
+ <!-- Modal de modification -->
+<div *ngIf="showEditModal" class="modal">
+  <div class="modal-content">
+    <!-- Bouton de fermeture (croix) en haut à droite -->
+    <span class="close-button" (click)="closeEditModal()">&#10005;</span>
+
+    <h2>Modifier un Arrosage</h2>
+
+    <!-- Sélectionner plusieurs dates -->
+    <label for="editDates">Sélectionner les dates :</label>
+    <div *ngFor="let date of editProgramDates; let i = index">
+      <input type="date" [(ngModel)]="editProgramDates[i]" />
+    </div>
+
+    <!-- Choisir la durée -->
+    <label for="editDuration">Durée :</label>
+    <select [(ngModel)]="editProgramDuration">
+      <option value="" disabled selected>Sélectionner une durée</option>
+      <option value="Pendant un mois">Pendant un mois</option>
+      <option value="Tous les 2 jours">Tous les 2 jours</option>
+      <option value="Tous les jours">Tous les jours</option>
+    </select>
+
+    <!-- Nombre de fois -->
+    <label for="editTimes">Nombre de fois :</label>
+    <input type="number" [(ngModel)]="editProgramTimes" (change)="updateEditFieldsForTimes()" />
+
+    <!-- Affichage des champs dynamiques en fonction du nombre de fois -->
+    <div *ngFor="let time of editTimes">
+      <label for="edit-time-{{time}}">Heure {{time}} :</label>
+      <input type="time" [(ngModel)]="editProgramTimesFields[time - 1].time" />
+
+      <label for="edit-volume-{{time}}">Volume d'eau (en litres) :</label>
+      <input type="number" [(ngModel)]="editProgramTimesFields[time - 1].volume" />
+
+      <label for="edit-unit-{{time}}">Unité :</label>
+      <select [(ngModel)]="editProgramTimesFields[time - 1].unit">
+        <option value="litres">Litres</option>
+        <option value="decilitres">Décilitres</option>
+        <option value="centilitres">Centilitres</option>
+        <option value="millilitres">Millilitres</option>
+      </select>
+    </div>
+
+    <button class="program-button" (click)="currentEditProgramId ? updateProgram(currentEditProgramId) : null">
+      Mettre à jour
+    </button>
+  </div>
+</div>

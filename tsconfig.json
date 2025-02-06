@@ -3,6 +3,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "types": ["bonjour", "estree"],
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

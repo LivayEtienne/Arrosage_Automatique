@@ -1,0 +1,39 @@
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 65px; /* Largeur fixe du sidebar */
+    height: calc(100vh - 60px); /* Hauteur totale de la vue moins la hauteur du navbar */
+    position: fixed; /* Fixe la position du sidebar */
+    top: 60px; /* Espace pour le navbar */
+    left: 0;
+    z-index: 1; /* Assure que le sidebar est au-dessus des autres éléments */
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    margin: 20px 0; /* Ajoute de l'espace entre les icônes */
+    text-align: center; /* Centre les icônes */
+  }
+  
+  .sidebar li a {
+    text-decoration: none;
+    color: #484848;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centre les icônes */
+    margin-top: 80px;
+  }
+  
+  .sidebar li a i {
+    font-size: 24px; /* Augmente la taille des icônes */
+  }
+  
+  .sidebar li a.active {
+    color: #97DD52; /* Couleur de la page active */
+  }
+  

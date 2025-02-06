@@ -1,0 +1,48 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #97DD52;
+  padding: 35px 20px; /* Ajustez le padding selon vos besoins */
+  width: 100%; /* Largeur totale de la page */
+  position: fixed; /* Fixe la position du navbar */
+  top: 0;
+  left: 0;
+  z-index: 2; /* Assure que le navbar est au-dessus du sidebar */
+}
+
+.icon img {
+  height: 50px; /* Ajustez la hauteur selon vos besoins */
+  width: auto; /* Conserve les proportions de l'image */
+  display: block; /* Assure que l'image est affichée correctement */
+  transform: scale(4.9); /* Agrandit l'image (zoom) */
+    margin-left: 25px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0 auto; /* Centre la barre de recherche */
+  }
+  
+  .search-bar input {
+    padding: 10px;
+    padding-left: 35px; /* Espace pour l'icône de recherche */
+    border-radius: 5px;
+    border: none;
+    width: 350px; /* Ajustez la largeur selon vos besoins */
+    font-size: 16px; /* Taille de police ajustée */
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px; /* Position de l'icône de recherche */
+    color: #333;
+    font-size: 18px; /* Taille de l'icône ajustée */
+  }

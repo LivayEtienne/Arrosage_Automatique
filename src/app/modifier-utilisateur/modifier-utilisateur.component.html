@@ -31,6 +31,11 @@
                         Le téléphone doit contenir exactement 9 chiffres.
                     </div>
 
+                    <!-- Affichage du message d'erreur si le téléphone existe déjà -->
+                    <div *ngIf="phoneExistsMessage" class="error">
+                        {{ phoneExistsMessage }}
+                    </div>
+
                     <label>Adresse:</label>
                     <input type="text" formControlName="adresse" placeholder="Entrez votre adresse" />
                     <div *ngIf="userForm.get('adresse')?.invalid && userForm.get('adresse')?.touched" class="error">
@@ -38,9 +43,14 @@
                     </div>
 
                     <label>Card ID:</label>
-                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" (input)="onRFIDScan($event)" />
+                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" readonly />
                     <div *ngIf="userForm.get('carteRfid')?.invalid && userForm.get('carteRfid')?.touched" class="error">
                         Card ID requise.
+                    </div>
+
+                    <!-- Affichage du message d'erreur si le Card ID existe déjà -->
+                    <div *ngIf="rfidExistsMessage" class="error">
+                        {{ rfidExistsMessage }}
                     </div>
 
                     <div class="button-group">

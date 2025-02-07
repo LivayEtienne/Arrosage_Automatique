@@ -50,18 +50,14 @@
                         Rôle requis.
                     </div>
 
-                    <!-- <label>Card ID:</label>
-                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" />
-                    <div *ngIf="userForm.get('cardID')?.invalid && userForm.get('cardID')?.touched" class="error">
-                        Card ID requise.
-                    </div> -->
-
 
                     <label>Card ID:</label>
-                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" (input)="onRFIDScan($event)" />
+                    <input type="text" formControlName="carteRfid" placeholder="Scanner la Card ID" readonly />
                     <div *ngIf="userForm.get('carteRfid')?.invalid && userForm.get('carteRfid')?.touched" class="error">
                         Card ID requise.
                     </div>
+
+
                     <div *ngIf="rfidExistsMessage" class="error">{{ rfidExistsMessage }}</div>
 
                     <div class="button-group">

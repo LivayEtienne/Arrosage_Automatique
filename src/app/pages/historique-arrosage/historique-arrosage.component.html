@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+<div class="content">
+  <app-sidebar></app-sidebar>
+  <div class="main-content">
+    <div class="separator"></div>
+    <div class="historique-arrosage-container">
+        <h2>Historique d'Arrosage</h2>
+        <table class="historique-table">
+          <thead>
+            <tr>
+              <th>Plante</th>
+              <th>Date & Heure</th>
+              <th>Type d'Arrosage</th>
+              <th>Volume d'Eau</th>
+              <th>Humidité</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let arrosage of arrosages">
+              <td>{{ arrosage.plante }}</td>
+              <td>{{ arrosage.date }} {{ arrosage.heure }}</td>
+              <td>{{ arrosage.type }}</td>
+              <td>{{ arrosage.volumeEau }} L</td>
+              <td>{{ arrosage.humidite }} %</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+  </div>

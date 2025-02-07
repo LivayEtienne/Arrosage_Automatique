@@ -101,20 +101,34 @@ export class ArrosageComponent implements OnInit {
       formData.append('eauUnit', this.plantForm.get('eauUnit')!.value);
 
       this.plantService.createPlant(formData).subscribe(response => {
-        this.successMessage = "Plante ajoutée avec succès!";
+        this.showSuccessMessage('Plante ajoutée avec succès!');
         this.plants.push(response.plant);
         this.closeModal();
       }, error => {
-        this.errorMessage = "Erreur lors de l'ajout de la plante.";
+        this.showErrorMessage('Erreur lors de l\'ajout de la plante.');
         console.error('Error creating plant:', error);
       });
     } else {
       if (!this.selectedFile) {
-        this.errorMessage = "La photo est requise!";
+        this.showErrorMessage('La photo est requise!');
       } else {
-        this.errorMessage = "Le formulaire est invalide.";
+        this.showErrorMessage('Le formulaire est invalide.');
       }
     }
+  }
+
+  showSuccessMessage(message: string) {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 1000); // Le message disparaît après 3 secondes
+  }
+
+  showErrorMessage(message: string) {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 3000); // Le message disparaît après 3 secondes
   }
 
   loadPlants() {
@@ -145,19 +159,50 @@ export class ArrosageComponent implements OnInit {
 
   deletePlant(id: string) {
     this.plantService.deletePlant(id).subscribe(response => {
-      this.successMessage = "Plante supprimée avec succès!";
+      this.showSuccessMessage('Plante supprimée avec succès!');
       this.plants = this.plants.filter(plant => plant._id !== id);
       this.saveProgramSubmittedState();
     }, error => {
-      this.errorMessage = "Erreur lors de la suppression de la plante.";
+      this.showErrorMessage('Erreur lors de la suppression de la plante.');
       console.error('Error deleting plant:', error);
     });
   }
 
   selectedPlant: PlantData | null = null;
+  selectedPlantPrograms: any[] = [];
 
-  openDetailsModal(plant: PlantData) {
-    this.selectedPlant = plant;
+  openPlantDetailsModal(plant: any) {
+    const plantId = plant._id; // Extrait l'ID de la plante
+    this.programmeService.getProgramsForPlant(plantId).subscribe(
+      (programs) => {
+        if (programs && Array.isArray(programs) && programs.length > 0) {
+          this.selectedPlantPrograms = programs;
+          this.selectedPlant = {
+            _id: plantId,
+            nom: plant.nom, // Utilisez les données réelles de la plante
+            category: plant.category, // Utilisez les données réelles de la plante
+            seuilHumidity: plant.seuilHumidity, // Utilisez les données réelles de la plante
+            seuilLuminosity: plant.seuilLuminosity, // Utilisez les données réelles de la plante
+            volumeEau: plant.volumeEau, // Utilisez les données réelles de la plante
+            eauUnit: plant.eauUnit, // Utilisez les données réelles de la plante
+            photo: plant.photo, // Utilisez les données réelles de la plante
+            arrosages: programs.flatMap(program => program.arrosages) // Récupérer tous les arrosages des programmes
+          };
+        } else {
+          this.selectedPlant = plant; // Afficher uniquement les détails de la plante
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des programmes:', error);
+        this.selectedPlantPrograms = [];
+        this.selectedPlant = null;
+      }
+    );
+  }
+
+  closePlantDetailsModal() {
+    this.selectedPlant = null;
+    this.selectedPlantPrograms = [];
   }
 
   openProgramModal(plantId: string) {
@@ -225,14 +270,14 @@ export class ArrosageComponent implements OnInit {
     this.programmeService.addProgram(program).subscribe(
       (response) => {
         console.log('Réponse de l\'API', response);
-        this.successMessage = 'Programmation enregistrée avec succès !';
+        this.showSuccessMessage('Programmation enregistrée avec succès !');
         this.isProgramSubmittedForPlants[plantId] = true;
         this.saveProgramSubmittedState();
         this.closeProgramModal();
         this.resetProgramFields();
       },
       (error) => {
-        this.successMessage = 'Une erreur est survenue lors de l\'enregistrement.';
+        this.showErrorMessage('Une erreur est survenue lors de l\'enregistrement.');
         console.error('Erreur lors de l\'enregistrement:', error);
       }
     );
@@ -258,45 +303,53 @@ export class ArrosageComponent implements OnInit {
     this.editProgramDates = [];
     this.editProgramDuration = '';
     this.editProgramTimes = 1;
-    this.editProgramTimesFields = {};
+    this.editProgramTimesFields = [];
     this.editTimes = [];
   }
 
-  updateEditFieldsForTimes() {
-    this.editTimes = Array(this.editProgramTimes).fill(0).map((_, index) => index + 1);
-    this.editProgramTimesFields = {};
-    for (let i = 0; i < this.editProgramTimes; i++) {
-      this.editProgramTimesFields[i] = {
-        time: '',
-        volume: 0,
-        unit: 'litres'
-      };
-    }
+  logBeforeOpenEditModal(plantId: string) {
+    console.log('Clic détecté. plantId:', plantId);
+    this.currentPlantId = plantId; // Stockez l'ID de la plante
+
+    // Récupérer les programmes associés à la plante
+    this.programmeService.getProgramsForPlant(plantId).subscribe(
+      (programs) => {
+        if (programs && Array.isArray(programs) && programs.length > 0) {
+          const programId = programs[0]._id; // Utilisez l'ID du programme (_id)
+          console.log('Program ID:', programId); // Ajoutez ce log pour vérifier l'ID
+          this.fetchProgramDetails(programId).then(() => {
+            this.openEditModal(programId); // Passez l'ID du programme
+          }).catch(error => {
+            console.error('Erreur lors de la récupération des détails du programme:', error);
+            this.showErrorMessage('Erreur lors de la récupération des détails du programme.');
+          });
+        } else {
+          console.warn('Impossible d\'éditer, données non valides');
+          this.showErrorMessage('Impossible d\'éditer : Le programme est vide ou non défini.');
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des programmes:', error);
+        this.showErrorMessage('Erreur lors de la récupération des programmes.');
+      }
+    );
   }
 
-  logBeforeOpenEditModal(plantId: string, programs: any) {
-    console.log('Clic détecté. plantId:', plantId, 'programs:', programs);
+  openEditModal(programId: string) {
+    console.log('Données reçues pour l\'édition:', programId);
 
-    // Vérifie si programs est bien défini et contient des programmes valides
-    if (programs && Array.isArray(programs) && programs.length > 0) {
-      const programId = programs[0];
-      console.log('Program ID:', programId); // Ajoutez ce log pour vérifier l'ID
-      this.fetchProgramDetails(programId).then(() => {
-        this.openEditModal(plantId, programs);
-      }).catch(error => {
-        console.error('Erreur lors de la récupération des détails du programme:', error);
-        this.errorMessage = 'Erreur lors de la récupération des détails du programme.';
-      });
-    } else {
-      console.warn('Impossible d\'éditer, données non valides');
-      this.errorMessage = 'Impossible d\'éditer : Le programme est vide ou non défini.';
-    }
+    // Si les données sont valides, procède à l'édition
+    this.currentEditProgramId = programId; // Stockez l'ID du programme
+    this.showEditModal = true;
+
+    this.updateEditFieldsForTimes();
   }
 
   fetchProgramDetails(programId: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.programmeService.getProgramById(programId).subscribe(
         (program) => {
+          console.log('Programme récupéré:', program); // Ajoutez ce log pour vérifier les données récupérées
           if (program && program.date && program.periode && program.nombreFois && program.arrosages) {
             this.editProgramDates = program.date;
             this.editProgramDuration = program.periode;
@@ -310,7 +363,7 @@ export class ArrosageComponent implements OnInit {
                 unit: arrosage.uniteVolume || 'litres'
               }));
             } else {
-              this.editProgramTimesFields = [];
+              this.editProgramTimesFields = Array(this.editProgramTimes).fill({ time: '', volume: 0, unit: 'litres' });
             }
 
             resolve();
@@ -327,21 +380,15 @@ export class ArrosageComponent implements OnInit {
     });
   }
 
-  openEditModal(plantId: string, programs: any) {
-    console.log('Données reçues pour l\'édition:', plantId, programs);
-
-    // Vérification de la validité des données
-    if (!programs || !Array.isArray(programs) || programs.length === 0) {
-      console.warn('Impossible d\'éditer : Le programme est vide ou non défini.');
-      this.errorMessage = 'Impossible d\'éditer : Le programme est vide ou non défini.';
-      return;
+  updateEditFieldsForTimes() {
+    this.editTimes = Array(this.editProgramTimes).fill(0).map((_, index) => index + 1);
+    if (this.editProgramTimesFields.length < this.editProgramTimes) {
+      for (let i = this.editProgramTimesFields.length; i < this.editProgramTimes; i++) {
+        this.editProgramTimesFields.push({ time: '', volume: 0, unit: 'litres' });
+      }
+    } else if (this.editProgramTimesFields.length > this.editProgramTimes) {
+      this.editProgramTimesFields = this.editProgramTimesFields.slice(0, this.editProgramTimes);
     }
-
-    // Si les données sont valides, procède à l'édition
-    this.currentEditProgramId = plantId;
-    this.showEditModal = true;
-
-    this.updateEditFieldsForTimes();
   }
 
   updateProgram(programId: string) {
@@ -350,7 +397,10 @@ export class ArrosageComponent implements OnInit {
       return;
     }
 
+    console.log('Program ID to update:', programId); // Vérifiez l'ID du programme
+
     const updatedProgram = {
+      plantId: this.currentPlantId, // Incluez l'ID de la plante
       date: this.editProgramDates.length > 0 ? this.editProgramDates : null,  // Si vide, on envoie null
       periode: this.editProgramDuration,
       nombreFois: this.editProgramTimes,
@@ -365,17 +415,17 @@ export class ArrosageComponent implements OnInit {
       });
     }
 
-    console.log('Données envoyées au backend:', updatedProgram);  // Vérifie ce qui est envoyé
+    console.log('Données envoyées au backend:', updatedProgram);  // Vérifiez les données envoyées
 
     this.programmeService.updateProgram(programId, updatedProgram).subscribe(
       (response) => {
         console.log('Réponse de l\'API', response);
-        this.successMessage = 'Programmation mise à jour avec succès !';
+        this.showSuccessMessage('Programmation mise à jour avec succès !');
         this.closeEditModal();
         this.resetEditProgramFields();
       },
       (error) => {
-        this.successMessage = 'Une erreur est survenue lors de la mise à jour.';
+        this.showErrorMessage('Une erreur est survenue lors de la mise à jour.');
         console.error('Erreur lors de la mise à jour:', error);
       }
     );

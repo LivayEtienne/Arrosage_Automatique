@@ -37,10 +37,7 @@ export class ProgrammeService {
   getProgramById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-  // Récupérer les programmes pour une plante spécifique
-  getProgramsForPlant(plantId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/plant/${plantId}`);
-  }
+
 
   // Ajouter une nouvelle programmation
   addProgram(program: any): Observable<any> {
@@ -56,6 +53,9 @@ export class ProgrammeService {
   deleteProgram(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
-
+ // Récupérer les programmes pour une plante spécifique
+ getProgramsForPlant(plantId: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/plant/${plantId}`);
+}
  
 }

@@ -492,3 +492,16 @@ button {
     background-color: #45a049;
     /* Couleur au survol */
 }
+
+.user-list table {
+    margin: 0 auto;
+    /* Centre le tableau horizontalement */
+}
+
+.user-list th,
+.user-list td {
+    text-align: center;
+    /* Centre le texte horizontalement */
+    vertical-align: middle;
+    /* Centre le texte verticalement */
+}

@@ -99,18 +99,19 @@
                     </td>
                     <td>
                         <button (click)="navigateToUpdateUser(user._id)">
-                            <img src="modifier.png" alt="Modifier" class="action-icon" />
+                            <img src="modifier.png" alt="Modifier" class="action-icon" title="Modifier" />
                         </button>
                         <button (click)="deleteUser(user)">
-                            <img src="supprimer.png" alt="Supprimer" class="action-icon" />
+                            <img src="supprimer.png" alt="Supprimer" class="action-icon" title="Supprimer" />
                         </button>
                         <button (click)="toggleRole(user)">
-                            <img src="switch.png" alt="Changer Rôle" class="action-icon" />
+                            <img src="switch.png" alt="Changer Rôle" class="action-icon" title="Changer le rôle" />
                         </button>
                         <button (click)="toggleStatus(user)">
-                            <img src="switcher.png" alt="Changer Statut" class="action-icon" />
+                            <img src="switcher.png" alt="Changer Statut" class="action-icon" title="Changer le statut" />
                         </button>
                     </td>
+
                 </tr>
             </tbody>
         </table>

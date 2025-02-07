@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserService, Item } from '../services/user.service'; // Assurez-vous que le chemin est correct
 import { CommonModule } from '@angular/common'; // Importer CommonModule
 import { FormsModule } from '@angular/forms'; // Importer FormsModule
-import { Router } from '@angular/router'; // Importer Router
+import { Router } from '@angular/router';
+import { SidebarLeftComponent } from "../sidebar-left/sidebar-left.component"; // Importer Router
 
 @Component({
     selector: 'app-liste-utilisateur',
     standalone: true,
     templateUrl: './liste-utilisateur.component.html',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, SidebarLeftComponent],
     styleUrls: ['./liste-utilisateur.component.css']
 })
 export class ListeUtilisateurComponent implements OnInit {

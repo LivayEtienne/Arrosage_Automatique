@@ -4,6 +4,7 @@ import { DasboardComponent } from './dasboard/dasboard.component';
 import { ModifierUtilisateurComponent } from './modifier-utilisateur/modifier-utilisateur.component';
 import { ListeUtilisateurComponent } from './liste-utilisateur/liste-utilisateur.component';
 import { ConnexionComponent } from './connexion/connexion.component';
+import { DeconnexionComponent } from './deconnexion/deconnexion.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'connexion', pathMatch: 'full' }, // Redirection vers la connexion
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'ajout-utilisateur', component: AjoutUtilisateurComponent },
   { path: 'modifier-utilisateur/:id', component: ModifierUtilisateurComponent },
   { path: 'dashboard', component: DasboardComponent },
+  {path: 'deconnexion', component: DeconnexionComponent},
   { path: 'liste-utilisateur', component: ListeUtilisateurComponent },
 ];

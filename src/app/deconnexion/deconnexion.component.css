@@ -1,0 +1,23 @@
+.logout-icon {
+    width: 30px; /* Ajuste la taille de l'image si nécessaire */
+    height: 30px;
+    display: block;
+    margin: 0 auto; /* Centrer l'image horizontalement */
+  }
+  
+  button {
+    background-color: transparent; /* Pour rendre le fond du bouton transparent */
+    border: none; /* Enlever la bordure du bouton */
+    padding: 10px; /* Ajouter un peu de marge interne */
+    cursor: pointer; /* Changer le curseur pour indiquer que c'est cliquable */
+    display: flex;
+    justify-content: center; /* Centrer le contenu du bouton */
+    align-items: flex-end; /* Placer l'image en bas */
+    margin-top: 800px;
+    margin-left: 70px;
+  }
+  
+  button:hover {
+    opacity: 0.8; /* Ajouter un effet de survol */
+  }
+  

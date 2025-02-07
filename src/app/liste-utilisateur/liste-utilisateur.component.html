@@ -1,6 +1,6 @@
 <nav class="navbar">
     <div class="navbar-logo">
-        <img src="pepiniere.png" alt="Logo" />
+        <img src="assets/pepiniere.png" alt="Logo" />
     </div>
     <div class="navbar-search">
         <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par numéro de téléphone..." (input)="searchUser()" />
@@ -9,23 +9,7 @@
 </nav>
 
 <div class="container">
-    <aside class="sidebar">
-        <ul>
-            <li>
-                <a href="#"><img src="home.png" alt="Accueil" class="sidebar-icon" /></a>
-            </li>
-            <li>
-                <a href="#"><img src="group.png" alt="Utilisateurs" class="sidebar-icon" /></a>
-            </li>
-            <li>
-                <a href="#"><img src="categories.png" alt="Applications" class="sidebar-icon" /></a>
-            </li>
-            <li>
-                <a href="#"><img src="file.png" alt="Historiques" class="sidebar-icon" /></a>
-            </li>
-        </ul>
-    </aside>
-
+    <app-sidebar-left></app-sidebar-left>
     <main class="user-list">
         <!-- <h2>Liste des Utilisateurs</h2> -->
 
@@ -89,16 +73,16 @@
                     </td>
                     <td>
                         <button (click)="navigateToUpdateUser(user._id)">
-                            <img src="assets/images/modifier.png" alt="Modifier" class="action-icon" />
+                            <img src="assets/modifier.png" alt="Modifier" class="action-icon" />
                         </button>
                         <button (click)="deleteUser(user)">
-                            <img src="supprimer.png" alt="Supprimer" class="action-icon" />
+                            <img src="assets/supprimer.png" alt="Supprimer" class="action-icon" />
                         </button>
                         <button (click)="toggleRole(user)">
-                            <img src="switch.png" alt="Changer Rôle" class="action-icon" />
+                            <img src="assets/switch.png" alt="Changer Rôle" class="action-icon" />
                         </button>
                         <button (click)="toggleStatus(user)">
-                            <img src="switcher.png" alt="Changer Statut" class="action-icon" />
+                            <img src="assets/switcher.png" alt="Changer Statut" class="action-icon" />
                         </button>
                     </td>
                 </tr>
@@ -143,6 +127,6 @@
         </div>
 
         <!-- Bouton de déconnexion -->
-        <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+        <img src="assets/boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
     </main>
 </div>

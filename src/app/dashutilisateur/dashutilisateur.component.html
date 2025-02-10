@@ -1,0 +1,54 @@
+<div class="dashboard">
+    <app-navbar></app-navbar>
+    <div class="content">
+      <main class="main-content">
+        <div class="cards-container">
+          <!-- Carte Humidité du Sol -->
+          <div class="humidity-card">
+            <h2>HUMIDITÉ DU SOL <span>☁️</span></h2>
+            <div class="percentage">
+              <p>Pourcentage</p>
+              <h3 [class.loading]="humidity === '--'">{{ humidity }}%</h3>
+            </div>
+            <button class="alert">Humidité Minimal</button>
+          </div>
+  
+          <!-- Carte Éclairage -->
+          <div class="light-card">
+            <h2>ÉCLAIRAGE <span>💡</span></h2>
+            <div class="percentage">
+              <p>Niveau</p>
+              <h3 [class.loading]="lightLevel === '--'">{{ lightLevel }}%</h3>
+            </div>
+            <button class="alert">Éclairage Faible</button>
+          </div>
+  
+          <!-- Carte Température -->
+          <div class="temperature-card">
+            <h2>TEMPÉRATURE <span>🌡️</span></h2>
+            <div class="percentage">
+              <p>Degré</p>
+              <h3 [class.loading]="temperature === '--'">{{ temperature }}°C</h3>
+            </div>
+            <button class="alert">Température Minimal</button>
+          </div>
+        </div>
+  
+        <!-- Graphiques en bas -->
+        <div class="charts-container">
+          <!-- 📊 Graphique d'humidité -->
+          <div class="chart">
+            <h2>Humidité du sol</h2>
+            <canvas #humidityChart></canvas>
+          </div>
+  
+          <!-- 🥧 Graphique d'éclairage -->
+          <div class="chart">
+            <h2>Éclairage</h2>
+            <canvas #lightChart></canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  

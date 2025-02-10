@@ -2,13 +2,12 @@
 <div class="content">
  <app-sidebar-left></app-sidebar-left>
   <div class="main-content">
-    <div class="separator"></div>
     <button class="add-plant-button" (click)="openModal()">Ajouter une plante</button>
 
+    
     <!-- Nouveau message de succès -->
     <div *ngIf="successMessage" class="modal-success-message">
       <div class="modal-success-content">
-        <span class="close-button" (click)="successMessage = null">&times;</span>
         <p>{{ successMessage }}</p>
       </div>
     </div>
@@ -16,7 +15,6 @@
     <!-- Nouveau message d'erreur -->
     <div *ngIf="errorMessage" class="modal-error-message">
       <div class="modal-error-content">
-        <span class="close-button" (click)="errorMessage = null">&times;</span>
         <p>{{ errorMessage }}</p>
       </div>
     </div>
@@ -28,8 +26,8 @@
         <div class="plant-details">
           <h3 class="plant-name">{{ plant.nom }}</h3>
           <div class="plant-actions">
-            <i class="fas fa-eye view-icon" (click)="openDetailsModal(plant)"></i>
-            <i class="fas fa-edit edit-icon" *ngIf="plant._id" (click)="logBeforeOpenEditModal(plant._id, plant.programs)"></i>
+            <i class="fas fa-eye view-icon" (click)="openPlantDetailsModal(plant)"></i>
+            <i class="fas fa-edit edit-icon" *ngIf="plant._id" (click)="logBeforeOpenEditModal(plant._id)"></i>
 
             
             <i class="fas fa-trash delete-icon" *ngIf="plant._id" (click)="openConfirmationModal(plant)"></i>
@@ -134,30 +132,31 @@
       </div>
     </div>
 
-    <!-- Modal pour afficher les détails de la plante -->
-    <div *ngIf="selectedPlant" class="modal">
-      <div class="modal-content">
-        <span class="close-button" (click)="selectedPlant = null">&times;</span>
-        <h2>Détails de la plante</h2>
-        <p><strong>Nom :</strong> {{ selectedPlant.nom }}</p>
-        <p><strong>Catégorie :</strong> {{ selectedPlant.category }}</p>
-        <p><strong>Seuil d'humidité :</strong> {{ selectedPlant.seuilHumidity }}%</p>
-        <p><strong>Seuil de luminosité :</strong> {{ selectedPlant.seuilLuminosity }}%</p>
-        <p><strong>Volume d'eau :</strong> {{ selectedPlant.volumeEau }} {{ selectedPlant.eauUnit }}</p>
-        <img *ngIf="selectedPlant.photo" [src]="'http://localhost:5000/' + selectedPlant.photo" alt="Plant Image" class="plant-image">
+  <!-- Modal pour afficher les détails de la plante -->
+<div *ngIf="selectedPlant" class="modal">
+  <div class="modal-content">
+    <span class="close-button" (click)="closePlantDetailsModal()">&times;</span>
+    <h2>Détails de la plante</h2>
+    <p><strong>Nom :</strong> {{ selectedPlant.nom }}</p>
+    <p><strong>Catégorie :</strong> {{ selectedPlant.category }}</p>
+    <p><strong>Seuil d'humidité :</strong> {{ selectedPlant.seuilHumidity }}%</p>
+    <p><strong>Seuil de luminosité :</strong> {{ selectedPlant.seuilLuminosity }}%</p>
+    <p><strong>Volume d'eau :</strong> {{ selectedPlant.volumeEau }} {{ selectedPlant.eauUnit }}</p>
+    <img *ngIf="selectedPlant.photo" [src]="'http://localhost:5000/' + selectedPlant.photo" alt="Plant Image" class="plant-image">
 
-        <!-- Détails de l'arrosage -->
-        <div *ngIf="selectedPlant.arrosages && selectedPlant.arrosages.length > 0">
-          <h3>Programmation de l'arrosage</h3>
-          <p><strong>Nombre d'arrosages :</strong> {{ selectedPlant.arrosages.length }}</p>
-          <div *ngFor="let arrosage of selectedPlant.arrosages; let i = index">
-            <p><strong>Arrosage {{ i + 1 }} :</strong></p>
-            <p><strong>Heure :</strong> {{ arrosage.heure }}</p>
-            <p><strong>Volume d'eau :</strong> {{ arrosage.volumeEau }} {{ arrosage.uniteVolume }}</p>
-          </div>
-        </div>
+    <!-- Détails de l'arrosage -->
+    <div *ngIf="selectedPlant.arrosages && selectedPlant.arrosages.length > 0">
+      <h3>Programmation de l'arrosage</h3>
+      <p><strong>Nombre d'arrosages :</strong> {{ selectedPlant.arrosages.length }}</p>
+      <div *ngFor="let arrosage of selectedPlant.arrosages; let i = index">
+        <p><strong>Arrosage {{ i + 1 }} :</strong></p>
+        <p><strong>Heure :</strong> {{ arrosage.heure }}</p>
+        <p><strong>Volume d'eau :</strong> {{ arrosage.volumeEau }} {{ arrosage.uniteVolume }}</p>
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Modal de programmation -->
     <div *ngIf="showModale" class="modal">
@@ -208,7 +207,7 @@
     </div>
 
  
- <!-- Modal de modification -->
+<!-- Modal de modification -->
 <div *ngIf="showEditModal" class="modal">
   <div class="modal-content">
     <!-- Bouton de fermeture (croix) en haut à droite -->
@@ -236,15 +235,15 @@
     <input type="number" [(ngModel)]="editProgramTimes" (change)="updateEditFieldsForTimes()" />
 
     <!-- Affichage des champs dynamiques en fonction du nombre de fois -->
-    <div *ngFor="let time of editTimes">
-      <label for="edit-time-{{time}}">Heure {{time}} :</label>
-      <input type="time" [(ngModel)]="editProgramTimesFields[time - 1].time" />
+    <div *ngFor="let time of editTimes; let i = index">
+      <label for="edit-time-{{i}}">Heure {{i + 1}} :</label>
+      <input type="time" [(ngModel)]="editProgramTimesFields[i].time" />
 
-      <label for="edit-volume-{{time}}">Volume d'eau (en litres) :</label>
-      <input type="number" [(ngModel)]="editProgramTimesFields[time - 1].volume" />
+      <label for="edit-volume-{{i}}">Volume d'eau (en litres) :</label>
+      <input type="number" [(ngModel)]="editProgramTimesFields[i].volume" />
 
-      <label for="edit-unit-{{time}}">Unité :</label>
-      <select [(ngModel)]="editProgramTimesFields[time - 1].unit">
+      <label for="edit-unit-{{i}}">Unité :</label>
+      <select [(ngModel)]="editProgramTimesFields[i].unit">
         <option value="litres">Litres</option>
         <option value="decilitres">Décilitres</option>
         <option value="centilitres">Centilitres</option>
@@ -255,5 +254,6 @@
     <button class="program-button" (click)="currentEditProgramId ? updateProgram(currentEditProgramId) : null">
       Mettre à jour
     </button>
+    <app-deconnexion></app-deconnexion>
   </div>
 </div>

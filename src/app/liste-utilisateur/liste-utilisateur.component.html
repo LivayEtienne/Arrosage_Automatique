@@ -4,12 +4,13 @@
     </div>
     <div class="navbar-search">
         <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par numéro de téléphone..." (input)="searchUser()" />
-        <img src="search.png" alt="Recherche" class="search-icon" (click)="searchUser()" />
+        <img src="assets/search.png" alt="Recherche" class="search-icon" (click)="searchUser()" />
     </div>
 </nav>
 
 <div class="container">
     <app-sidebar-left></app-sidebar-left>
+
     <main class="user-list">
         <!-- <h2>Liste des Utilisateurs</h2> -->
 
@@ -34,10 +35,15 @@
             <div>
                 <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" /> Tout sélectionner
             </div>
-            <input type="file" accept=".csv" #fileInput style="display: none;" (change)="onFileSelected($event)" />
-            <button class="import-user-button" (click)="fileInput.click()">Importer un fichier CSV</button>
-            <button class="add-user-button" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
+            <div class="right-buttons">
+                <button *ngIf="selectedCount > 0" class="action-button" (click)="openDeleteMultipleConfirmationModal()">
+                    Supprimer Tout
+                </button>
+                <input type="file" accept=".csv" #fileInput style="display: none;" (change)="onFileSelected($event)" />
+                <button class="action-button" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
+            </div>
         </div>
+
 
         <table>
             <thead>
@@ -46,10 +52,13 @@
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Téléphone</th>
+                    <th>Code Secret</th>
                     <th>Adresse</th>
                     <th>Status</th>
                     <th>Rôle</th>
                     <th>Action</th>
+
+
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +69,7 @@
                     <td>{{ user.nom }}</td>
                     <td>{{ user.prenom }}</td>
                     <td>{{ user.telephone }}</td>
+                    <td>{{ user.codeSecret }}</td>
                     <td>{{ user.adresse }}</td>
                     <td>
                         <span [ngClass]="{'status-actif': user.status, 'status-inactif': !user.status}">
@@ -73,21 +83,27 @@
                     </td>
                     <td>
                         <button (click)="navigateToUpdateUser(user._id)">
-                            <img src="assets/modifier.png" alt="Modifier" class="action-icon" />
+                            <img src="assets/modifier.png" alt="Modifier" class="action-icon" title="Modifier" />
                         </button>
                         <button (click)="deleteUser(user)">
-                            <img src="assets/supprimer.png" alt="Supprimer" class="action-icon" />
+                            <img src="assets/supprimer.png" alt="Supprimer" class="action-icon" title="Supprimer" />
                         </button>
                         <button (click)="toggleRole(user)">
-                            <img src="assets/switch.png" alt="Changer Rôle" class="action-icon" />
+                            <img src="assets/switch.png" alt="Changer Rôle" class="action-icon" title="Changer le rôle" />
                         </button>
                         <button (click)="toggleStatus(user)">
-                            <img src="assets/switcher.png" alt="Changer Statut" class="action-icon" />
+                            <img src="assets/switcher.png" alt="Changer Statut" class="action-icon" title="Changer le statut" />
                         </button>
                     </td>
+
                 </tr>
             </tbody>
         </table>
+
+        <!-- Message d'erreur -->
+        <div *ngIf="noUsersFound" class="error-message">
+            Aucuns utilisateurs disponibles pour ce filtre.
+        </div>
 
         <div class="pagination">
             <button (click)="previousPage()" [disabled]="currentPage === 1">Précédent</button>
@@ -97,10 +113,6 @@
             <button (click)="nextPage()" [disabled]="currentPage === getTotalPages()">Suivant</button>
         </div>
 
-        <!-- Bouton Supprimer Tout -->
-        <button *ngIf="selectedCount > 0" class="delete-all-button" (click)="openDeleteMultipleConfirmationModal()">
-            Supprimer Tout
-        </button>
 
         <!-- Modal de confirmation pour suppression multiple -->
         <div class="modal modal-delete-multiple" *ngIf="showModal">
@@ -127,6 +139,6 @@
         </div>
 
         <!-- Bouton de déconnexion -->
-        <img src="assets/boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+        <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
     </main>
 </div>

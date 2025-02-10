@@ -1,0 +1,46 @@
+.content {
+    display: flex;
+    position: relative;
+  }
+  
+  .main-content {
+    margin-left: 160px; /* Marge pour compenser la largeur du sidebar + padding */
+    padding: 20px;
+    width: calc(100% - 220px); /* Largeur ajustée pour le contenu principal */
+  }
+  
+
+
+.historique-arrosage-container {
+    padding: 20px;
+  }
+  
+  .historique-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .historique-table thead {
+    background-color: #97DD52;
+  }
+  
+  .historique-table th,
+  .historique-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .historique-table th {
+    background-color: #97DD52;
+    color: white;
+  }
+  
+  .historique-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .historique-table tr:hover {
+    background-color: #ddd;
+  }
+  

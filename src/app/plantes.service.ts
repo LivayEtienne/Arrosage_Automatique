@@ -25,7 +25,7 @@ export interface PlantData {
   providedIn: 'root'
 })
 export class PlantService {
-  private apiUrl = 'http://localhost:5000/api/plants';
+  private apiUrl = 'http://localhost:3000/api/plants';
 
   constructor(private http: HttpClient) {}
 

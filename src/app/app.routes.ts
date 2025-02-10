@@ -6,6 +6,8 @@ import { ListeUtilisateurComponent } from './liste-utilisateur/liste-utilisateur
 import { ConnexionComponent } from './connexion/connexion.component';
 import { DeconnexionComponent } from './deconnexion/deconnexion.component';
 import { ArrosageComponent } from './arrosage/arrosage.component';
+import { DashutilisateurComponent } from './dashutilisateur/dashutilisateur.component';
+import { HistoriqueArrosageComponent } from './historique/historique.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'connexion', pathMatch: 'full' }, // Redirection vers la connexion
@@ -15,5 +17,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DasboardComponent },
   {path: 'deconnexion', component: DeconnexionComponent},
   { path: 'liste-utilisateur', component: ListeUtilisateurComponent },
-  { path: 'arrosage', component: ArrosageComponent }
+  { path: 'arrosage', component: ArrosageComponent },
+  { path: 'dashutilisateur', component: DashutilisateurComponent },
+  { path: 'historique', component: HistoriqueArrosageComponent }
 ];

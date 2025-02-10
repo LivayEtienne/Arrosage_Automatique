@@ -10,6 +10,7 @@ export interface Item {
   telephone: number;
   adresse: string;
   carteRfid: string; // Ajout de la propriété carteRfid
+  codeSecret:number;
   status: boolean;
   role: string;
   selected?: boolean; // Propriété ajoutée pour la sélection
@@ -65,7 +66,11 @@ checkExistingUser(data: { telephone: string; carteRfid: string }): Observable<{ 
   return this.http.post<{ exists: boolean; type?: string }>('http://localhost:5000/api/check-user', data);
 }
 
-importUsers(users: Item[]): Observable<any> {
-  return this.http.post(`${this.apiUrl}/import`, users); // Assurez-vous que apiUrl est bien défini
+// Méthode pour importer un fichier CSV
+importCsv(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
+  return this.http.post(`${this.apiUrl}/import-csv`, formData);
 }
+
 }

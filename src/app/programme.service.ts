@@ -24,7 +24,7 @@ interface Program {
 })
 export class ProgrammeService {
 
-  private apiUrl = 'http://localhost:5000/api/programs'; // L'URL de ton backend
+  private apiUrl = 'http://localhost:3000/api/programs'; // L'URL de ton backend
 
   constructor(private http: HttpClient) { }
 

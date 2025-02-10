@@ -1,326 +1,310 @@
 .content {
-    display: flex;
-    position: relative;
-    padding-top: 100px; /* Espace pour le navbar */
-  }
-  
-  .main-content {
-    margin-left: 160px; /* Marge pour compenser la largeur du sidebar + padding */
-    padding: 20px;
-    width: calc(100% - 220px); /* Largeur ajustée pour le contenu principal */
-  }
-  
-  
-  
-  .separator {
-    width: 1px;
-    background-color: #97DD52; /* Couleur verte pour la ligne de séparation */
-    height: 100vh; /* Hauteur totale de la vue */
-    position: fixed; /* Fixe la position du séparateur */
-    top: 0;
-    left: 150px; /* Position à droite du sidebar */
-    z-index: 0; /* Assure que le séparateur est derrière le contenu */
-   ;
-  }
-  
- 
-  
-  .add-plant-button {
-    background-color: #64BD0B;
-    color: black;
-    border: none;
-    padding: 12px 22px;
-    border-radius: 8px;
-    float: right;
-    cursor: pointer;
-    font-size: 1.2em;
-    margin-top: 25px
-  }
-  
-  .plants-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px; /* Réduire l'écart entre les cartes de plantes */
-    margin-top: 60px;
-  }
-  
-  .plant-card {
-    border: 2px solid #64BD0B;
-    border-radius: 10px;
-    padding: 20px;
-    width: 200px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Assure que le contenu est centré */
-    justify-content: space-between;
-    background-color: #fff; /* Ajoute un fond blanc */
-  }
-  
-  .plant-image {
-    width: 120px; /* Fixe la largeur de l'image à une taille fixe */
-    height: 120px; /* Fixe la hauteur de l'image pour que la taille soit carrée */
-    border-radius: 5px;
-    object-fit: cover; /* Assure que l'image couvre tout l'espace sans déformation */
-    margin-bottom: 10px; /* Ajoute un peu d'espace entre l'image et les détails de la plante */
-  }
-  
-  
- 
-  .plant-details {
-    margin-top: 10px;
-  }
-  
-  .plant-name {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-  }
-  
-  .plant-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .plant-actions i {
-    cursor: pointer;
-    color: #333;
-  }
-  
-  .program-button {
-    background-color: #64BD0B;
-    color: white;
-    border: none;
-    padding: 6px 6px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 130px;
-  }
-  
-
-  .modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-    z-index: 1050;
-    padding: 20px;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.close-button {
-    float: right;
-    cursor: pointer;
-    font-size: 24px;
-    color: #333;
-}
-
-.close-button:hover {
-    color: red;
-}
-
-.form-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-    gap: 10px;
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease-in-out;
-  box-sizing: border-box; /* Assure que padding et border sont inclus dans la largeur totale */
-}
-
-.form-group {
-  flex: 1 1 45%;
-  margin-right: 5%;
+  display: flex;
   position: relative;
 }
 
+.main-content {
+  margin-left: 160px; /* Marge pour compenser la largeur du sidebar + padding */
+  width: calc(100% - 220px); /* Largeur ajustée pour le contenu principal */
+}
+
+
+
+.add-plant-button {
+  background-color: #64BD0B;
+  color: black;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  float: right;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-top: 25px
+}
+
+.plants-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px; /* Réduire l'écart entre les cartes de plantes */
+  margin-top: 60px;
+}
+
+.plant-card {
+  border: 2px solid #64BD0B;
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Assure que le contenu est centré */
+  justify-content: space-between;
+  background-color: #fff; /* Ajoute un fond blanc */
+}
+
+.plant-image {
+  width: 120px; /* Fixe la largeur de l'image à une taille fixe */
+  height: 120px; /* Fixe la hauteur de l'image pour que la taille soit carrée */
+  border-radius: 5px;
+  object-fit: cover; /* Assure que l'image couvre tout l'espace sans déformation */
+  margin-bottom: 10px; /* Ajoute un peu d'espace entre l'image et les détails de la plante */
+}
+
+
+
+.plant-details {
+  margin-top: 10px;
+}
+
+.plant-name {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.plant-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.plant-actions i {
+  cursor: pointer;
+  color: #333;
+}
+
+.program-button {
+  background-color: #64BD0B;
+  color: white;
+  border: none;
+  padding: 6px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 130px;
+}
+
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 1050;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  float: right;
+  cursor: pointer;
+  font-size: 24px;
+  color: #333;
+}
+
+.close-button:hover {
+  color: red;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+input, select {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 8px;
+font-size: 16px;
+transition: border-color 0.3s ease-in-out;
+box-sizing: border-box; /* Assure que padding et border sont inclus dans la largeur totale */
+}
+
+.form-group {
+flex: 1 1 45%;
+margin-right: 5%;
+position: relative;
+}
+
 .form-group:nth-child(even) {
-  margin-right: 0;
+margin-right: 0;
 }
 
 .form-group label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
 }
 
 
 
 input:focus, select:focus {
-    border-color: #00796b;
-    outline: none;
+  border-color: #00796b;
+  outline: none;
 }
 
 .text-danger {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
 .text-success {
-    color: green;
-    font-size: 14px;
-    margin-top: 5px;
+  color: green;
+  font-size: 14px;
+  margin-top: 5px;
 }
 
 /* Style pour le volume d'eau avec unité */
 .volume-eau-group .input-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .volume-eau-group .input-group input {
-    flex: 1;
+  flex: 1;
 }
 
 .volume-eau-group .input-group select {
-    flex: 0 0 auto;
-    padding: 10px;
+  flex: 0 0 auto;
+  padding: 10px;
 }
 
 /* Bouton stylisé */
 button {
-    width: 200px;
-    background-color: #00796b;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    margin-top: 10px;
+  width: 200px;
+  background-color: #00796b;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-top: 10px;
 }
 
 button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
-    .form-group {
-        flex: 1 1 100%;
-        margin-right: 0;
-    }
+  .form-group {
+      flex: 1 1 100%;
+      margin-right: 0;
+  }
 
-    .volume-eau-group .input-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .volume-eau-group .input-group {
+      flex-direction: column;
+      align-items: flex-start;
+  }
 
-    .volume-eau-group .input-group input {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
+  .volume-eau-group .input-group input {
+      margin-right: 0;
+      margin-bottom: 10px;
+  }
 
-    .volume-eau-group .input-group select {
-        width: 100%;
-    }
+  .volume-eau-group .input-group select {
+      width: 100%;
+  }
 }
 
-  
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
-  
-  .showmodal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .showmodal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    width: 300px;
-  }
-  
-  .modal-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .btn-danger {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .btn-secondary {
-    background-color: #6c757d;
-    color: white;
-  }
-  
-  .modal-success-message, .modal-error-message {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    z-index: 2000;
-  }
-  
-  .modal-success-content, .modal-error-content {
-    text-align: center;
-  }
-  
-  .modal-success-content {
-    border: 2px solid green;
-  }
-  
-  .modal-error-content {
-    border: 2px solid red;
-  }
-  
+
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.showmodal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.showmodal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  width: 300px;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-success-message, .modal-error-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+}
+
+.modal-success-content, .modal-error-content {
+  text-align: center;
+}
+
+.modal-success-content {
+  border: 2px solid green;
+}
+
+.modal-error-content {
+  border: 2px solid red;
+}

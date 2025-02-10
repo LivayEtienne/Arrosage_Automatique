@@ -14,6 +14,8 @@
     <div class="login-card">
       <h2>Veuillez saisir votre code</h2>
       <p class="subtitle">Vous pouvez aussi vous connecter par carte</p>
+      
+      <input type="hidden" id="cardIdInput" class="form-control" placeholder="Entrez la Card ID" >
 
       <!-- Ajout de [formGroup] pour lier le formulaire -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -23,7 +25,8 @@
             formControlName="code1" class="code-input"
             (input)="moveFocus(code1, code2)" 
             (keydown.backspace)="moveBack(code1, null)">
-          
+            
+              
           <input 
             #code2 type="text" maxlength="1" 
             formControlName="code2" class="code-input"

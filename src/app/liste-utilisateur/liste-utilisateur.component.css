@@ -179,6 +179,8 @@
     color: white;
     /* Couleur du texte */
     border: none;
+    margin-right: 15px;
+    /* Ajoutez cette ligne pour l'espace */
     /* Pas de bordure */
     border-radius: 5px;
     /* Coins arrondis */
@@ -315,6 +317,7 @@ button {
 .delete-all-button:hover {
     background-color: darkgreen;
     /* Couleur plus foncée au survol */
+    margin-left: 10px;
 }
 
 
@@ -388,9 +391,11 @@ button {
     /* Couleur verte */
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 10px;
     cursor: pointer;
     margin-left: 1000px;
+    margin-right: 20px;
+    /* Ajoutez cette ligne pour l'espace */
     border-radius: 5px;
     font-size: 16px;
 }
@@ -403,8 +408,18 @@ button {
 .button-container {
     display: flex;
     justify-content: space-between;
+    /* Espace entre les éléments */
     align-items: center;
+    /* Aligne verticalement */
     margin-bottom: 20px;
+    /* Espacement sous le conteneur */
+}
+
+.button-container .right-buttons {
+    display: flex;
+    /* Utilise flexbox pour aligner les boutons à droite */
+    align-items: center;
+    /* Aligne verticalement */
 }
 
 .filter-container {
@@ -438,4 +453,55 @@ button {
     /* Couleur de la bordure lors de la mise au point */
     outline: none;
     /* Supprimer l'outline par défaut */
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    /* Centre le texte */
+    width: 100%;
+    /* Prend toute la largeur du conteneur */
+}
+
+.action-button {
+    background-color: #97DD52;
+    /* Couleur de fond verte */
+    color: white;
+    /* Couleur du texte */
+    border: none;
+    /* Pas de bordure */
+    border-radius: 5px;
+    /* Coins arrondis */
+    padding: 10px 15px;
+    /* Espacement interne */
+    cursor: pointer;
+    /* Curseur pointer */
+    width: 200px;
+    /* Largeur fixe */
+    height: 40px;
+    /* Hauteur fixe */
+    font-size: 16px;
+    /* Taille de la police */
+    margin-left: 10px;
+    /* Espace entre les boutons */
+}
+
+.action-button:hover {
+    background-color: #45a049;
+    /* Couleur au survol */
+}
+
+.user-list table {
+    margin: 0 auto;
+    /* Centre le tableau horizontalement */
+}
+
+.user-list th,
+.user-list td {
+    text-align: center;
+    /* Centre le texte horizontalement */
+    vertical-align: middle;
+    /* Centre le texte verticalement */
 }

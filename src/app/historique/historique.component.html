@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+<div class="content">
+  <app-sidebar-left></app-sidebar-left>
+  <div class="main-content">
+    <div class="historique-arrosage-container">
+      <h2>Historique d'Arrosage</h2>
+      <table class="historique-table">
+        <thead>
+          <tr>
+            <th>Plante</th>
+            <th>Date</th>
+            <th>Heure</th>
+            <th>Volume d'Eau</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let historique of historiques">
+            <tr *ngFor="let arrosage of historique.arrosages; let i = index">
+              <!-- Afficher le nom de la plante uniquement pour la première ligne -->
+              <td *ngIf="i === 0" [attr.rowspan]="historique.arrosages.length">
+                {{ historique.plantId.nom }}
+              </td>
+              <!-- Afficher la date uniquement pour la première ligne -->
+              <td *ngIf="i === 0" [attr.rowspan]="historique.arrosages.length">
+                {{ historique.date[0] }}
+              </td>
+              <td>{{ arrosage.heure }}</td>
+              <td>{{ arrosage.volumeEau }} {{ arrosage.uniteVolume }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <app-deconnexion></app-deconnexion>
+</div>

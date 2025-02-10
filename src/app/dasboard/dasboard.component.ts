@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { DataService } from '../data.service';
+import { SensorDataService } from '../sensor-data.service';  
 import Chart from 'chart.js/auto';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarLeftComponent } from '../sidebar-left/sidebar-left.component';
@@ -20,19 +20,21 @@ export class DasboardComponent implements AfterViewInit {
   lightLevel: string | number = '--';
   temperature: string | number = '--';
 
-  constructor(private dataService: DataService) { }
+  private temperatureChart: any;  // Référence pour le graphique de température
+  private humidityChartInstance: any;  // Référence pour le graphique d'humidité
+
+  constructor(private sensorDataService: SensorDataService) { }
 
   ngAfterViewInit() {
-    this.dataService.getData().subscribe(
+    this.sensorDataService.getData().subscribe(
       (response) => {
-        // Vérifie que les données existent
-        if (response && response.data) {
-          this.humidity = response.data.humidity;
-          this.lightLevel = response.data.lightLevel;
-          this.temperature = response.data.temperature;
+        if (response && response.temperature !== undefined && response.humidity !== undefined) {
+          this.humidity = response.humidity;
+          this.temperature = response.temperature;
+          this.lightLevel = response.lightLevel !== undefined ? response.lightLevel : '--';
 
-          // Mettre à jour les graphiques avec les données reçues
-          this.updateCharts(response.data);  
+          // Mettre à jour les graphiques avec les nouvelles données
+          this.updateCharts(response);
         } else {
           console.error('Réponse invalide ou vide');
         }
@@ -44,52 +46,81 @@ export class DasboardComponent implements AfterViewInit {
   }
 
   // Création du graphique d'humidité
-  createHumidityChart(humidityData: number[]) {
-    new Chart(this.humidityChart.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-        datasets: [{
-          label: 'Humidité',
-          data: humidityData, // Utilise les données d'humidité récupérées
-          backgroundColor: 'rgba(0, 255, 0, 0.6)',
-          borderColor: 'rgba(0, 255, 0, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true }
+  createHumidityChart(humidityData: number) {
+    if (!this.humidityChartInstance) {
+      this.humidityChartInstance = new Chart(this.humidityChart.nativeElement, {
+        type: 'bar',
+        data: {
+          labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+          datasets: [{
+            label: 'Humidité',
+            data: [humidityData],
+            backgroundColor: 'rgba(0, 255, 0, 0.6)',
+            borderColor: 'rgba(0, 255, 0, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
         }
-      }
-    });
+      });
+    } else {
+      // Mise à jour des données d'humidité
+      this.humidityChartInstance.data.datasets[0].data = [humidityData];
+      this.humidityChartInstance.update();
+    }
   }
 
-  // Création du graphique de lumière
-  createLightChart(lightData: number[]) {
-    new Chart(this.lightChart.nativeElement, {
-      type: 'pie',
-      data: {
-        labels: ['Lun', 'Mar', 'Mer'],
-        datasets: [{
-          data: lightData, // Utilise les données de lumière récupérées
-          backgroundColor: ['#a3e635', '#16a34a', '#166534']
-        }]
-      },
-      options: {
-        responsive: true
-      }
-    });
+  // Création ou mise à jour du graphique de température (Doughnut)
+  createTemperatureChart(temperatureData: number) {
+    const temperatureColor = this.getTemperatureColor(temperatureData); // Récupère la couleur en fonction de la température
+
+    if (!this.temperatureChart) {
+      // Création du graphique si il n'existe pas
+      this.temperatureChart = new Chart(this.lightChart.nativeElement, {
+        type: 'doughnut',
+        data: {
+          labels: ['Température'],
+          datasets: [{
+            data: [temperatureData], // Valeur de température
+            backgroundColor: [temperatureColor], // Change la couleur en fonction de la température
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: {
+            animateRotate: true, // Animation de rotation lors de la mise à jour
+            animateScale: true   // Animation de mise à l'échelle
+          }
+        }
+      });
+    } else {
+      // Mise à jour des données de température
+      this.temperatureChart.data.datasets[0].data = [temperatureData];
+      this.temperatureChart.data.datasets[0].backgroundColor = [temperatureColor]; // Change la couleur
+      this.temperatureChart.update();  // Force la mise à jour
+    }
   }
 
-  // Méthode pour mettre à jour les graphiques
+  // Fonction pour obtenir la couleur du graphique en fonction de la température
+  getTemperatureColor(temperature: number): string {
+    if (temperature <= 10) {
+      return '#3498db'; // Bleu pour les températures basses
+    } else if (temperature <= 25) {
+      return '#f1c40f'; // Jaune pour les températures modérées
+    } else if (temperature <= 28) {
+      return '#FF0000'; // Orange pour les températures chaudes
+    } else {
+      return '#e74c3c'; // Rouge pour les températures élevées
+    }
+  }
+
+  // Méthode pour mettre à jour les graphiques avec les nouvelles données
   updateCharts(data: any) {
-    // Exemple de structure des données (tu devras peut-être ajuster en fonction des données reçues)
-    const humidityData = [data.humidity, 30, 35, 25, 42, 45, 48]; // Humidité sur 7 jours (ajuste les valeurs)
-    const lightData = [62, 20, 6];  // Données de lumière (ajuste selon la réponse)
-
-    this.createHumidityChart(humidityData);
-    this.createLightChart(lightData);
+    this.createHumidityChart(data.humidity);  // Graphique d'humidité
+    this.createTemperatureChart(data.temperature);  // Graphique de température sous forme doughnut
   }
 }

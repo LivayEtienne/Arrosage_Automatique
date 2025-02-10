@@ -505,3 +505,42 @@ button {
     vertical-align: middle;
     /* Centre le texte verticalement */
 }
+
+.toggle-button-container {
+    position: fixed;
+    /* Permet de fixer le bouton à l'écran */
+    bottom: 20px;
+    /* Espacement depuis le bas */
+    right: 20px;
+    /* Espacement depuis la droite */
+    z-index: 1000;
+    /* Assurez-vous que le bouton soit au-dessus des autres éléments */
+}
+
+.toggle-button {
+    background-color: #4CAF50;
+    /* Couleur de fond */
+    color: white;
+    /* Couleur du texte */
+    border: none;
+    /* Pas de bordure */
+    padding: 15px 20px;
+    /* Espacement intérieur */
+    text-align: center;
+    /* Centrer le texte */
+    text-decoration: none;
+    /* Pas de soulignement */
+    display: inline-block;
+    /* Permet d'ajuster la taille */
+    font-size: 16px;
+    /* Taille de la police */
+    cursor: pointer;
+    /* Curseur pointeur */
+    border-radius: 5px;
+    /* Coins arrondis */
+}
+
+.toggle-button:hover {
+    background-color: #45a049;
+    /* Couleur au survol */
+}

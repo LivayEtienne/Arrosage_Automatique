@@ -54,9 +54,12 @@
                 <button *ngIf="selectedCount > 0" class="action-button" (click)="openDeleteMultipleConfirmationModal()">
                     Supprimer Tout
                 </button>
-                <input type="file" accept=".csv" #fileInput style="display: none;" (change)="onFileSelected($event)" />
-                <button class="action-button" (click)="fileInput.click()">Importer un fichier CSV</button>
+
                 <button class="action-button" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
+
+                <!-- Nouveau bouton pour importer le fichier CSV -->
+                <button class="action-button" (click)="fileInput.click()">Importer un fichier CSV</button>
+                <input #fileInput type="file" accept=".csv" (change)="onFileSelected($event)" style="display: none" />
             </div>
         </div>
 
@@ -156,5 +159,9 @@
 
         <!-- Bouton de déconnexion -->
         <img src="boutonDeconnexion.png" alt="Déconnexion" class="logout-icon" />
+
+
     </main>
+
+
 </div>

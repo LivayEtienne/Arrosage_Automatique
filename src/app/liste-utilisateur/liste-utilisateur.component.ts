@@ -3,6 +3,8 @@ import { UserService, Item } from '../services/user.service'; // Assurez-vous qu
 import { CommonModule } from '@angular/common'; // Importer CommonModule
 import { FormsModule } from '@angular/forms'; // Importer FormsModule
 import { Router } from '@angular/router'; // Importer Router
+import { PumpService } from '../services/pompe.service'; // Importer le service de pompe
+
 
 @Component({
     selector: 'app-liste-utilisateur',
@@ -24,13 +26,13 @@ export class ListeUtilisateurComponent implements OnInit {
     selectedRole: string = ''; // Pour le filtre de rôle
     selectedStatus: string = ''; // Pour le filtre de statut
     noUsersFound: boolean = false; // Ajoutez cette ligne
+    
+
+    
 
 
 
-
-
-
-    constructor(private userService: UserService, private router: Router) {} // Ajouter le Router ici
+    constructor(private userService: UserService, private router: Router,private pumpService: PumpService ) {} // Ajouter le Router ici
 
     ngOnInit(): void {
         this.getItems();
@@ -185,13 +187,6 @@ export class ListeUtilisateurComponent implements OnInit {
         });
     }
 
-    // Méthode pour supprimer un utilisateur par ID
-    // deleteUser(id: string) {
-    //     this.userService.deleteItem(id).subscribe(() => {
-    //         this.items = this.items.filter(user => user._id !== id); // Retirer l'utilisateur supprimé
-    //     });
-    // }
-
     // Méthode pour rechercher un utilisateur par numéro de téléphone
     searchUser() {
         console.log('searchUser called with:', this.searchQuery);
@@ -258,36 +253,34 @@ export class ListeUtilisateurComponent implements OnInit {
         });
     }
 
-    
     // Filtrer les utilisateurs
     filterUsers() {
         this.updatePaginatedItems(); // Recalculer les utilisateurs paginés après filtrage
     }
 
-    // Ajoutez une propriété pour stocker le fichier sélectionné
-    selectedFile: File | null = null;
+     // Méthode appelée lorsque l'utilisateur sélectionne un fichier CSV
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('csvFile', file, file.name);
 
-    // Méthode pour ouvrir la boîte de dialogue de fichier CSV
-    onFileSelected(event: any): void {
-        this.selectedFile = event.target.files[0]; // Récupérer le fichier sélectionné
-    }
-
-    // Méthode pour importer le fichier CSV
-    importCsv() {
-        if (this.selectedFile) {
-            this.userService.importCsv(this.selectedFile).subscribe(
-                (response) => {
-                    console.log('CSV importé avec succès', response);
-                    this.getItems(); // Rafraîchir la liste des utilisateurs après importation
-                },
-                (error) => {
-                    console.error('Erreur lors de l\'importation du CSV', error);
-                }
-            );
-        } else {
-            alert('Veuillez sélectionner un fichier CSV avant d\'importer.');
+      // Envoi du fichier CSV au backend via le service
+      this.userService.importCsv(formData).subscribe(
+        (response) => {
+          console.log('Fichier importé avec succès', response);
+          this.getItems(); // Recharge les utilisateurs après l'importation
+        },
+        (error) => {
+          console.error('Erreur lors de l\'importation du fichier', error);
         }
+      );
     }
+  }
 
+    
 
+   
+
+ 
 }

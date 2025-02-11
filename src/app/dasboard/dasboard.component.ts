@@ -17,21 +17,22 @@ export class DasboardComponent implements AfterViewInit {
   @ViewChild('lightChart') lightChart!: ElementRef;
 
   humidity: string | number = '--';
-  lightLevel: string | number = '--';
+  luminosite: string | number = '--';
   temperature: string | number = '--';
 
   private temperatureChart: any;  // Référence pour le graphique de température
   private humidityChartInstance: any;  // Référence pour le graphique d'humidité
+  private luminositeChart: any;  // Référence pour le graphique de luminosité
 
   constructor(private sensorDataService: SensorDataService) { }
 
   ngAfterViewInit() {
     this.sensorDataService.getData().subscribe(
       (response) => {
-        if (response && response.temperature !== undefined && response.humidity !== undefined) {
+        if (response && response.temperature !== undefined && response.humidity !== undefined && response.luminosite !== undefined) {
           this.humidity = response.humidity;
           this.temperature = response.temperature;
-          this.lightLevel = response.lightLevel !== undefined ? response.lightLevel : '--';
+          this.luminosite = response.luminosite;
 
           // Mettre à jour les graphiques avec les nouvelles données
           this.updateCharts(response);
@@ -74,36 +75,43 @@ export class DasboardComponent implements AfterViewInit {
     }
   }
 
-  // Création ou mise à jour du graphique de température (Doughnut)
-  createTemperatureChart(temperatureData: number) {
-    const temperatureColor = this.getTemperatureColor(temperatureData); // Récupère la couleur en fonction de la température
+  // Création ou mise à jour du graphique combiné pour la température et la luminosité (Doughnut)
+createCombinedChart(temperatureData: number, humidityData: number, luminositeData: number) {
+  const temperatureColor = this.getTemperatureColor(temperatureData); // Récupère la couleur en fonction de la température
+  const luminositeColor = '#F39C12'; // Couleur pour la luminosité
+  const humidityColor = '#3498db'; // Couleur pour l'humidité
 
-    if (!this.temperatureChart) {
-      // Création du graphique si il n'existe pas
-      this.temperatureChart = new Chart(this.lightChart.nativeElement, {
-        type: 'doughnut',
-        data: {
-          labels: ['Température'],
-          datasets: [{
-            data: [temperatureData], // Valeur de température
-            backgroundColor: [temperatureColor], // Change la couleur en fonction de la température
-          }]
-        },
-        options: {
-          responsive: true,
-          animation: {
-            animateRotate: true, // Animation de rotation lors de la mise à jour
-            animateScale: true   // Animation de mise à l'échelle
-          }
+  if (!this.temperatureChart) {
+    // Création du graphique si il n'existe pas
+    this.temperatureChart = new Chart(this.lightChart.nativeElement, {
+      type: 'doughnut',
+      data: {
+        labels: ['Température', 'Humidité', 'Luminosité'],
+        datasets: [{
+          label: 'Données',
+          data: [temperatureData, humidityData, luminositeData], // Valeurs des données
+          backgroundColor: [temperatureColor, humidityColor, luminositeColor], // Couleurs respectives
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        rotation: -90,
+        cutout: '70%',  // Réduit la taille du trou pour créer un effet visuel
+        animation: {
+          animateRotate: true, // Animation de rotation lors de la mise à jour
+          animateScale: true   // Animation de mise à l'échelle
         }
-      });
-    } else {
-      // Mise à jour des données de température
-      this.temperatureChart.data.datasets[0].data = [temperatureData];
-      this.temperatureChart.data.datasets[0].backgroundColor = [temperatureColor]; // Change la couleur
-      this.temperatureChart.update();  // Force la mise à jour
-    }
+      }
+    });
+  } else {
+    // Mise à jour des données du graphique combiné
+    this.temperatureChart.data.datasets[0].data = [temperatureData, humidityData, luminositeData];
+    this.temperatureChart.data.datasets[0].backgroundColor = [temperatureColor, humidityColor, luminositeColor];
+    this.temperatureChart.update();  // Force la mise à jour
   }
+}
+
 
   // Fonction pour obtenir la couleur du graphique en fonction de la température
   getTemperatureColor(temperature: number): string {
@@ -121,6 +129,7 @@ export class DasboardComponent implements AfterViewInit {
   // Méthode pour mettre à jour les graphiques avec les nouvelles données
   updateCharts(data: any) {
     this.createHumidityChart(data.humidity);  // Graphique d'humidité
-    this.createTemperatureChart(data.temperature);  // Graphique de température sous forme doughnut
+    this.createCombinedChart(data.temperature, data.humidity, data.luminosite);  // Graphique combiné pour température, humidité et luminosité
   }
+  
 }

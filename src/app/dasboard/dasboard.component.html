@@ -20,7 +20,7 @@
           <h2>ÉCLAIRAGE <span>💡</span></h2>
           <div class="percentage">
             <p>Niveau</p>
-            <h3 [class.loading]="lightLevel === '--'">{{ lightLevel }}%</h3>
+            <h3 [class.loading]="luminosite === '--'">{{ luminosite }}%</h3>
           </div>
           <button class="alert">Éclairage Faible</button>
         </div>
@@ -46,7 +46,7 @@
 
         <!-- 🥧 Graphique d'éclairage -->
         <div class="chart">
-          <h2>Éclairage</h2>
+          <h2>Graphique</h2>
           <canvas #lightChart></canvas>
         </div>
       </div>

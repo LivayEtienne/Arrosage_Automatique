@@ -324,3 +324,52 @@ button:disabled {
     border: 2px solid red;
   }
   
+
+  .water-tank {
+    width: 300px;
+    height: 200px;
+    border-radius: 15px;
+    border: 2px solid #64BD0B;
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    margin-top: 100px;
+  }
+  
+  .water-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  .water-level {
+    font-size: 80px;
+    margin: 20px 0;
+    transition: color 0.3s ease;
+  }
+  
+  .water-level i {
+    font-size: 50px;
+  }
+  
+  .blue {
+    color: #3CC7F5; /* Bleu pour l'eau optimale */
+  }
+  
+  .red {
+    color: #cc0000; /* Rouge pour l'eau insuffisante */
+  }
+ 
+
+  .water-level i.fa-tint {
+    font-size: 120px; /* Augmenter la taille de l'icône */
+  }
+
+  .required {
+    color: red;
+    font-size: 1.2em;
+  }
+  

@@ -10,7 +10,7 @@ interface Arrosage {
   heure: string;
   type: string;
   volumeEau: number;
-  humidite: number;
+  unite: string;
 }
 
 @Component({

@@ -61,14 +61,14 @@
         <form [formGroup]="plantForm" (ngSubmit)="submit()" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group mb-3">
-              <label for="nom">Nom</label>
+              <label for="nom">Nom <span class="required">*</span></label>
               <input type="text" id="nom" formControlName="nom">
               <div *ngIf="plantForm.get('nom')!.invalid && plantForm.get('nom')!.touched">
                 <small class="text-danger">Le nom est requis</small>
               </div>
             </div>
             <div class="form-group mb-3">
-              <label for="category">Catégorie</label>
+              <label for="category">Catégorie <span class="required">*</span></label>
               <select id="category" formControlName="category">
                 <option value="" disabled selected>Sélectionner une catégorie</option>
                 <option value="agricole">Agricole</option>
@@ -82,7 +82,7 @@
           </div>
           <div class="form-row">
             <div class="form-group mb-3">
-              <label for="photo">Photo</label>
+              <label for="photo">Photo <span class="required">*</span></label>
               <input type="file" id="photo" formControlName="photo" (change)="onFileChange($event)">
               <div *ngIf="!selectedFile && plantForm.get('photo')!.touched" class="text-danger">
                 <small>La photo est requise</small>
@@ -92,7 +92,7 @@
               </div>
             </div>
             <div class="form-group mb-3">
-              <label for="seuilHumidity">Seuil d'humidité (%)</label>
+              <label for="seuilHumidity">Seuil d'humidité (%) <span class="required">*</span></label>
               <input type="number" id="seuilHumidity" formControlName="seuilHumidity">
               <div *ngIf="plantForm.get('seuilHumidity')!.invalid && plantForm.get('seuilHumidity')!.touched">
                 <small class="text-danger">Le seuil d'humidité doit être un nombre entre 0 et 100</small>
@@ -101,23 +101,23 @@
           </div>
           <div class="form-row">
             <div class="form-group mb-3">
-              <label for="seuilLuminosity">Seuil de luminosité (%)</label>
+              <label for="seuilLuminosity">Seuil de luminosité (%) <span class="required">*</span></label>
               <input type="number" id="seuilLuminosity" formControlName="seuilLuminosity">
               <div *ngIf="plantForm.get('seuilLuminosity')!.invalid && plantForm.get('seuilLuminosity')!.touched">
                 <small class="text-danger">Le seuil de luminosité doit être un nombre entre 0 et 100</small>
               </div>
             </div>
             <div class="form-group mb-3">
-              <label for="volumeEau">Volume d'eau</label>
+              <label for="volumeEau">Volume d'eau <span class="required">*</span></label>
               <input type="number" id="volumeEau" formControlName="volumeEau" class="form-control">
               <div *ngIf="plantForm.get('volumeEau')!.invalid && plantForm.get('volumeEau')!.touched">
                 <small class="text-danger">Le volume d'eau est requis</small>
               </div>
             </div>
             <div class="form-group mb-3">
-              <label for="eauUnit">Unité d'eau</label>
+              <label for="eauUnit">Unité d'eau <span class="required">*</span></label>
               <select id="eauUnit" formControlName="eauUnit" class="form-control">
-                <option value="" disabled selected>Sélectionner une unite</option>
+                <option value="" disabled selected>Sélectionner une unité</option>
                 <option value="l">Litres</option>
                 <option value="cl">Centilitres</option>
                 <option value="dl">Décilitres</option>
@@ -132,6 +132,7 @@
         </form>
       </div>
     </div>
+    
 
   <!-- Modal pour afficher les détails de la plante -->
 <div *ngIf="selectedPlant" class="modal">
@@ -158,55 +159,56 @@
   </div>
 </div>
 
+  <!-- Modal de programmation -->
+  <div *ngIf="showModale" class="modal">
+    <div class="modal-content">
+      <!-- Bouton de fermeture (croix) en haut à droite -->
+      <span class="close-button" (click)="closeProgramModal()">&#10005;</span>
 
-    <!-- Modal de programmation -->
-    <div *ngIf="showModale" class="modal">
-      <div class="modal-content">
-        <!-- Bouton de fermeture (croix) en haut à droite -->
-        <span class="close-button" (click)="closeProgramModal()">&#10005;</span>
+      <h2>Programmer un Arrosage</h2>
 
-        <h2>Programmer un Arrosage</h2>
+     <!-- Sélectionner plusieurs dates -->
+<label for="dates"> Date de programmation : <span class="required">*</span></label>
+<input type="date" [(ngModel)]="programDates" multiple [min]="todayDate" />
 
-        <!-- Sélectionner plusieurs dates -->
-        <label for="dates">Sélectionner les dates :</label>
-        <input type="date" [(ngModel)]="programDates" multiple />
 
-        <!-- Choisir la durée -->
-        <label for="duration">Durée :</label>
-        <select [(ngModel)]="programDuration">
-          <option value="" disabled selected>Sélectionner une durée</option>
-          <option value="Pendant un mois">Pendant un mois</option>
-          <option value="Tous les 2 jours">Tous les 2 jours</option>
-          <option value="Tous les jours">Tous les jours</option>
+
+      <!-- Choisir la durée -->
+      <label for="duration">Durée : <span class="required">*</span> </label>
+      <select [(ngModel)]="programDuration">
+        <option value="" disabled selected>Sélectionner une durée</option>
+        <option value="Pendant un mois">Pendant un mois</option>
+        <option value="Tous les 2 jours">Tous les 2 jours</option>
+        <option value="Tous les jours">Tous les jours</option>
+      </select>
+
+      <!-- Nombre de fois -->
+      <label for="times">Nombre de fois : <span class="required">*</span></label>
+      <input type="number" [(ngModel)]="programTimes" (change)="updateFieldsForTimes()" />
+
+      <!-- Affichage des champs dynamiques en fonction du nombre de fois -->
+      <div *ngFor="let time of times">
+        <label for="time-{{time}}">Heure {{time}} : <span class="required">*</span></label>
+        <input type="time" [(ngModel)]="programTimesFields[time - 1].time" />
+
+        <label for="volume-{{time}}">Volume d'eau  : <span class="required">*</span> </label>
+        <input type="number" [(ngModel)]="programTimesFields[time - 1].volume" />
+
+        <label for="unit-{{time}}">Unité : <span class="required">*</span> </label>
+        <select [(ngModel)]="programTimesFields[time - 1].unit">
+          <option value="litres">Litres</option>
+          <option value="decilitres">Décilitres</option>
+          <option value="decilitres">Centilitres</option>
+          <option value="decilitres">Millilitres</option>
         </select>
-
-        <!-- Nombre de fois -->
-        <label for="times">Nombre de fois :</label>
-        <input type="number" [(ngModel)]="programTimes" (change)="updateFieldsForTimes()" />
-
-        <!-- Affichage des champs dynamiques en fonction du nombre de fois -->
-        <div *ngFor="let time of times">
-          <label for="time-{{time}}">Heure {{time}} :</label>
-          <input type="time" [(ngModel)]="programTimesFields[time - 1].time" />
-
-          <label for="volume-{{time}}">Volume d'eau (en litres) :</label>
-          <input type="number" [(ngModel)]="programTimesFields[time - 1].volume" />
-
-          <label for="unit-{{time}}">Unité :</label>
-          <select [(ngModel)]="programTimesFields[time - 1].unit">
-            <option value="litres">Litres</option>
-            <option value="decilitres">Décilitres</option>
-            <option value="decilitres">Centilitres</option>
-            <option value="decilitres">Millilitres</option>
-          </select>
-        </div>
-
-        <button class="program-button" (click)="currentPlantId ? submitProgram(currentPlantId) : null">
-          Soumettre
-        </button>
       </div>
-    </div>
 
+      <button class="program-button" (click)="currentPlantId ? submitProgram(currentPlantId) : null">
+        Soumettre
+      </button>
+    </div>
+  </div>
+   
  
 <!-- Modal de modification -->
 <div *ngIf="showEditModal" class="modal">
@@ -217,7 +219,7 @@
     <h2>Modifier un Arrosage</h2>
 
     <!-- Sélectionner plusieurs dates -->
-    <label for="editDates">Sélectionner les dates :</label>
+    <label for="editDates">Date de programmation :</label>
     <div *ngFor="let date of editProgramDates; let i = index">
       <input type="date" [(ngModel)]="editProgramDates[i]" />
     </div>
@@ -257,3 +259,16 @@
     </button>
   </div>
 </div>
+
+
+
+<div class="water-tank">
+   <!-- Niveau d'eau -->
+   <p>{{ waterLevel === 'optimal' ? 'Niveau d\'eau optimal' : 'Niveau d\'eau insuffisant' }}</p>
+
+  <!-- Icone de l'eau -->
+  <div class="water-level" [ngClass]="{'optimal': waterLevel === 'optimal', 'low': waterLevel === 'low'}">
+    <i class="fas fa-tint" [ngClass]="{'blue': waterLevel === 'optimal', 'red': waterLevel === 'low'}"></i>
+  </div>
+</div>
+

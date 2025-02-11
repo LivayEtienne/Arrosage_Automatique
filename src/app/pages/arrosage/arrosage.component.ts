@@ -51,6 +51,10 @@ export class ArrosageComponent implements OnInit {
   editProgramTimesFields: any = {};
   editTimes: number[] = [];
 
+  waterLevel: string = 'optimal';  // Valeur initiale : 'optimal' ou 'low'
+
+  todayDate: string;
+
   constructor(private fb: FormBuilder, private plantService: PlantService, private programmeService: ProgrammeService) {
     this.plantForm = this.fb.group({
       nom: ['', Validators.required],
@@ -61,6 +65,10 @@ export class ArrosageComponent implements OnInit {
       volumeEau: ['', Validators.required],
       eauUnit: ['', Validators.required]
     });
+
+    const today = new Date();
+    // Formatez la date au format YYYY-MM-DD
+    this.todayDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit() {
@@ -241,18 +249,32 @@ export class ArrosageComponent implements OnInit {
   }
 
   submitProgram(plantId: string) {
-    if (!plantId) {
-      console.error('plantId is null or undefined');
+    if (!this.programDates || this.programDates.length === 0) {
+      this.showErrorMessage('Veuillez sélectionner au moins une date.');
       return;
     }
 
-    if (this.isProgramSubmittedForPlants[plantId]) {
-      console.log('Le programme a déjà été soumis pour cette plante !');
+    if (!this.programDuration) {
+      this.showErrorMessage('Veuillez sélectionner une durée.');
       return;
     }
 
+    // Vérifiez que l'heure et le volume sont valides pour chaque arrosage
+    for (let i = 0; i < this.programTimes; i++) {
+      const timeField = this.programTimesFields[i];
+      if (!timeField.time) {
+        this.showErrorMessage(`Veuillez spécifier l'heure pour le ${i + 1}ème arrosage.`);
+        return;
+      }
+      if (timeField.volume <= 0) {
+        this.showErrorMessage(`Le volume d'eau pour le ${i + 1}ème arrosage doit être supérieur à 0.`);
+        return;
+      }
+    }
+
+    // Si toutes les validations passent
     const program = {
-      plantId: plantId,  // Ajouter l'ID de la plante
+      plantId: plantId,
       date: this.programDates,
       periode: this.programDuration,
       nombreFois: this.programTimes,
@@ -267,6 +289,7 @@ export class ArrosageComponent implements OnInit {
       });
     }
 
+    // Continuez avec l'appel au backend
     this.programmeService.addProgram(program).subscribe(
       (response) => {
         console.log('Réponse de l\'API', response);
@@ -281,7 +304,8 @@ export class ArrosageComponent implements OnInit {
         console.error('Erreur lors de l\'enregistrement:', error);
       }
     );
-  }
+}
+
 
   saveProgramSubmittedState() {
     localStorage.setItem('programSubmittedState', JSON.stringify(this.isProgramSubmittedForPlants));
